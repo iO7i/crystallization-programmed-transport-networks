@@ -22,7 +22,7 @@ jobs:
       - run: pytest
       - run: python -m build
       - run: crystal-transport benchmark run benchmark_001 --resolution 8 --output ci-results/benchmark_001
-      - run: crystal-transport benchmark run benchmark_002 --resolution 8 --output ci-results/benchmark_002
+      - run: crystal-transport benchmark run benchmark_002 --resolution 8 --validation-profile smoke --output ci-results/benchmark_002
       - name: Report B002 smoke validation details
         if: always()
         run: |

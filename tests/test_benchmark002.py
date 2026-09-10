@@ -14,8 +14,11 @@ def test_small_benchmark002_writes_controls_and_figures(tmp_path: Path) -> None:
         grid_resolutions=(6,),
         contrast_matrix_values=(1.0e-3,),
         benchmark001_reference_dir=Path("results/benchmark_001"),
+        validation_profile="smoke",
     )
     output = tmp_path / "benchmark_002"
+    assert result["validation"]["validation_profile"] == "smoke"
+    assert result["validation_passed"]
     # The coarse smoke grid is an artifact-generation check.  The canonical
     # 32^3 B001 comparison is a release-gate control and is validated from the
     # committed full-resolution result, not from this platform-sensitive grid.

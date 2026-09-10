@@ -19,8 +19,8 @@ def test_placement_is_exact_and_seeded() -> None:
         for axis in range(3)
     )
     score = baseline_flux_score(morphology, baseline, 1.0, 1.0e-3)
-    first = select_crystalline_like(morphology, 0.2, "backbone", 7, score)
-    second = select_crystalline_like(morphology, 0.2, "backbone", 7, score)
+    first = select_crystalline_like(morphology, 0.2, "baseline-flux-ranked", 7, score)
+    second = select_crystalline_like(morphology, 0.2, "baseline-flux-ranked", 7, score)
     assert first.selected_voxel_count == round(0.2 * int(np.count_nonzero(morphology.phase)))
     assert first.selection_digest == second.selection_digest
     assert np.all(~first.crystalline_mask | morphology.phase)

@@ -20,12 +20,15 @@ D_matrix_sensitivity_values: [0.01, 0.001, 0.0001]
 placement_modes:
   - random
   - interface
-  - backbone
+  - baseline-flux-ranked
   - low_criticality
 sweep_seed_values: [20260910, 20260911, 20260912]
 placement_seed_values: [20260910, 20260911, 20260912, 20260913, 20260914]
 geometry_perturbation_mode: none
 structural_perturbation_status: deferred_until_002A_and_002B_stable
+validation_profiles:
+  canonical: "full numerical acceptance on the declared Benchmark 002 grids"
+  smoke: "fast CI artifact/core-invariant checks; not canonical scientific acceptance"
 solver: "Benchmark 001 finite-volume solver with explicit voxelwise D(x)"
 solver_tolerance: 1.0e-10
 flux_balance_tolerance: 1.0e-5

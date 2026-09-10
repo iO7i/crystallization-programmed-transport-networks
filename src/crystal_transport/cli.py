@@ -22,6 +22,12 @@ def main() -> int:
     run_parser.add_argument("name", choices=["benchmark_001", "benchmark_002"])
     run_parser.add_argument("--output", type=Path, default=None)
     run_parser.add_argument("--resolution", type=int, default=32)
+    run_parser.add_argument(
+        "--validation-profile",
+        choices=["canonical", "smoke"],
+        default="canonical",
+        help="Benchmark 002 acceptance profile; smoke is for fast CI artifact checks",
+    )
     args = parser.parse_args()
     if args.command == "validate":
         result = run_validation(shape=(args.resolution,) * 3)
@@ -31,7 +37,11 @@ def main() -> int:
     if args.name == "benchmark_001":
         result = run_benchmark(output_dir=output, resolution=args.resolution)
     else:
-        result = run_benchmark002(output_dir=output, resolution=args.resolution)
+        result = run_benchmark002(
+            output_dir=output,
+            resolution=args.resolution,
+            validation_profile=args.validation_profile,
+        )
     print(
         json.dumps(
             {"validation_passed": result["validation_passed"], "output": str(args.output)},

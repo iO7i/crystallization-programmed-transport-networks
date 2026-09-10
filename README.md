@@ -54,8 +54,11 @@ The benchmark’s central result is not a morphology ranking. It is that matched
 Benchmark 002 reuses the stable lamella, cylinder, and analytical gyroid fixtures. It
 labels a controlled fraction of the existing transport phase as a crystalline-like
 low-mobility subdomain and measures how mobility penalty and spatial placement affect
-transport. It does not model real crystallization, PES-b-PEO behavior, SCFT, or
-experimental material performance.
+transport. 002A and 002B are fixed-geometry phenomenological mobility perturbations:
+they are not a crystallization simulation, do not reconstruct morphology, and cannot
+establish whether real crystallization improves transport. Structural help/hurt is
+deferred to 002C. They do not model PES-b-PEO behavior, SCFT, or experimental material
+performance.
 
 Run it with:
 
@@ -69,11 +72,13 @@ blockage are deferred until those experiments are stable. See
 [docs/benchmark-002.md](docs/benchmark-002.md) and
 [benchmarks/benchmark_002.yaml](benchmarks/benchmark_002.yaml).
 
-The canonical run found no transport improvement under the mobility-only model. At
-equal gyroid fraction and mobility penalty, placement changed normalized transport;
-seeded random placement was most damaging in this experiment, while flux-ranked
-backbone placement was not. These are declared synthetic placement results, not claims
-about where real crystals form.
+The canonical run found no transport improvement under the mobility-only model. This is
+the expected passive-diffusion control result for reducing positive local diffusivity,
+not a universal claim about crystallization. At equal gyroid fraction and mobility
+penalty, placement changed normalized transport; seeded random placement was most
+damaging in this experiment, while the literal `baseline-flux-ranked` placement was
+not. These are declared synthetic placement results, not claims about where real
+crystals form or which network locations are truly critical.
 
 ## Validation and limitations
 

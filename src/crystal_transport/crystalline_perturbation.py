@@ -18,7 +18,7 @@ from scipy.ndimage import distance_transform_edt
 from .morphology import Morphology
 from .transport import TransportResult
 
-PlacementMode = Literal["random", "interface", "backbone", "low_criticality"]
+PlacementMode = Literal["random", "interface", "baseline-flux-ranked", "low_criticality"]
 
 
 @dataclass(frozen=True)
@@ -106,7 +106,7 @@ def baseline_flux_score(
     """Compute a non-circular baseline local flux-magnitude score.
 
     The score combines the three unperturbed scalar solves. It is used only to define
-    deterministic high-flux (backbone) and low-flux placement hypotheses; the
+    deterministic high-flux (baseline-flux-ranked) and low-flux placement hypotheses; the
     perturbed solve is never used to choose its own voxels.
     """
 
@@ -144,7 +144,7 @@ def select_crystalline_like(
 
     if not 0.0 <= fraction_of_transport_phase <= 1.0:
         raise ValueError("crystalline-like fraction must be between zero and one")
-    if mode not in {"random", "interface", "backbone", "low_criticality"}:
+    if mode not in {"random", "interface", "baseline-flux-ranked", "low_criticality"}:
         raise ValueError(f"unsupported placement mode: {mode}")
     eligible = np.flatnonzero(morphology.phase.ravel())
     selected_count = int(round(fraction_of_transport_phase * eligible.size))
@@ -160,9 +160,11 @@ def select_crystalline_like(
             algorithm = "ascending periodic Euclidean distance to matrix interface"
         else:
             if baseline_flux is None or baseline_flux.shape != morphology.shape:
-                raise ValueError("backbone and low-criticality modes require baseline_flux")
+                raise ValueError(
+                    "baseline-flux-ranked and low-criticality modes require baseline_flux"
+                )
             score = baseline_flux.ravel()[eligible]
-            descending = mode == "backbone"
+            descending = mode == "baseline-flux-ranked"
             order = np.lexsort((tie_break, -score if descending else score))
             algorithm = (
                 "descending baseline local flux-magnitude rank"

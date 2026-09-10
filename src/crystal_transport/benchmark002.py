@@ -10,7 +10,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -41,9 +41,10 @@ DEFAULT_PLACEMENT_SEEDS = (20260910, 20260911, 20260912, 20260913, 20260914)
 PLACEMENT_MODES: tuple[PlacementMode, ...] = (
     "random",
     "interface",
-    "backbone",
+    "baseline-flux-ranked",
     "low_criticality",
 )
+ValidationProfile = Literal["canonical", "smoke"]
 
 
 def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
@@ -365,6 +366,97 @@ def _control_checks(
     }
 
 
+def _smoke_checks(
+    root: Path,
+    sample_morphology: Morphology,
+    masks: dict[str, np.ndarray],
+    sweep_rows: list[dict[str, Any]],
+    placement_rows: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Run fast, exact/core checks for an explicitly labelled CI smoke profile."""
+
+    required_outputs = (
+        "runs.csv",
+        "summary.csv",
+        "placement_summary.csv",
+        "grid_summary.csv",
+        "contrast_sensitivity.csv",
+        "morphology_metrics.csv",
+        "placement_masks.npz",
+        "figures/mobility_sweep.png",
+        "figures/placement_comparison.png",
+        "figures/placement_slices.png",
+    )
+    artifact_generation_pass = all(
+        (root / relative_path).is_file() for relative_path in required_outputs
+    )
+
+    rows = sweep_rows + placement_rows
+    denominator_checks = []
+    for row in rows:
+        eligible = int(row["eligible_voxel_count"])
+        selected = int(row["selected_voxel_count"])
+        target = float(row["crystalline_like_fraction_target"])
+        actual = float(row["crystalline_like_fraction_actual_transport_phase"])
+        denominator_checks.append(
+            eligible > 0
+            and 0 <= selected <= eligible
+            and selected == round(target * eligible)
+            and np.isclose(actual, selected / eligible, rtol=1.0e-15, atol=1.0e-15)
+        )
+    phase_denominator_pass = bool(denominator_checks) and all(denominator_checks)
+
+    expected_modes = set(PLACEMENT_MODES)
+    valid_masks_pass = (
+        set(masks) == {"phase", *expected_modes}
+        and masks["phase"].shape == sample_morphology.shape
+        and masks["phase"].dtype == bool
+        and all(
+            mask.shape == sample_morphology.shape
+            and mask.dtype == bool
+            and np.all(~mask | sample_morphology.phase)
+            for name, mask in masks.items()
+            if name != "phase"
+        )
+    )
+
+    invalid_fraction_rejected = False
+    try:
+        select_crystalline_like(sample_morphology, 1.1, "random", 0)
+    except ValueError:
+        invalid_fraction_rejected = True
+
+    invalid_mask_rejected = False
+    matrix_indices = np.flatnonzero(~sample_morphology.phase.ravel())
+    if matrix_indices.size:
+        invalid_mask = np.zeros(sample_morphology.shape, dtype=bool)
+        invalid_mask.ravel()[matrix_indices[0]] = True
+        try:
+            build_diffusivity_field(sample_morphology, invalid_mask, 1.0, 0.1, 1.0e-3)
+        except ValueError:
+            invalid_mask_rejected = True
+
+    invalid_field_rejected = False
+    try:
+        solve_effective_diffusivity_field(
+            sample_morphology,
+            np.zeros(sample_morphology.shape, dtype=float),
+            axis=0,
+        )
+    except ValueError:
+        invalid_field_rejected = True
+
+    fail_closed_inputs_pass = (
+        invalid_fraction_rejected and invalid_mask_rejected and invalid_field_rejected
+    )
+    return {
+        "artifact_generation_pass": artifact_generation_pass,
+        "phase_denominator_pass": phase_denominator_pass,
+        "valid_masks_pass": valid_masks_pass,
+        "fail_closed_inputs_pass": fail_closed_inputs_pass,
+    }
+
+
 def _grid_stability(grid_rows: list[dict[str, Any]]) -> dict[str, Any]:
     result: dict[str, Any] = {
         "resolutions": sorted({int(row["resolution"]) for row in grid_rows}),
@@ -473,10 +565,15 @@ def _plot_figures(root: Path) -> None:
 
     with np.load(root / "placement_masks.npz", allow_pickle=False) as masks:
         phase = masks["phase"]
-        names = ["random", "interface", "backbone", "low_criticality"]
+        names = [
+            ("random", "random"),
+            ("interface", "interface"),
+            ("baseline_flux_ranked", "baseline-flux-ranked"),
+            ("low_criticality", "low_criticality"),
+        ]
         fig, axes = plt.subplots(1, 4, figsize=(12, 3), constrained_layout=True)
-        for axis, name in enumerate(names):
-            mask = masks[name].astype(bool)
+        for axis, (archive_name, display_name) in enumerate(names):
+            mask = masks[archive_name].astype(bool)
             rgb = np.zeros((*phase.shape[:2], 3), dtype=float)
             slice_phase = phase[:, :, phase.shape[2] // 2]
             slice_mask = mask[:, :, mask.shape[2] // 2]
@@ -484,7 +581,7 @@ def _plot_figures(root: Path) -> None:
             rgb[~slice_phase] = (0.05, 0.05, 0.05)
             rgb[slice_mask] = (0.95, 0.75, 0.10)
             axes[axis].imshow(rgb.transpose(1, 0, 2), origin="lower")
-            axes[axis].set_title(name)
+            axes[axis].set_title(display_name)
             axes[axis].set_axis_off()
         fig.suptitle("Benchmark 002B — gyroid placement sanity slices")
         fig.savefig(fig_dir / "placement_slices.png", dpi=180)
@@ -504,8 +601,12 @@ def run_benchmark(
     grid_resolutions: tuple[int, ...] = (16, 24, 32),
     contrast_matrix_values: tuple[float, ...] = (1.0e-2, 1.0e-3, 1.0e-4),
     benchmark001_reference_dir: str | Path = "results/benchmark_001",
+    validation_profile: ValidationProfile = "canonical",
 ) -> dict[str, Any]:
     """Run bounded 002A/002B experiments; structural 002C is intentionally deferred."""
+
+    if validation_profile not in {"canonical", "smoke"}:
+        raise ValueError("validation_profile must be 'canonical' or 'smoke'")
 
     root = Path(output_dir)
     root.mkdir(parents=True, exist_ok=True)
@@ -528,6 +629,7 @@ def run_benchmark(
         "solver_tolerance": B002_SOLVER_RTOL,
         "flux_balance_tolerance": FLUX_BALANCE_TOLERANCE,
         "geometry_perturbation_mode": "none",
+        "validation_profile": validation_profile,
     }
     cache: dict[tuple[int, str, float], tuple[tuple[Any, Any, Any], np.ndarray, Morphology]] = {}
 
@@ -706,7 +808,7 @@ def run_benchmark(
         phase=masks["phase"],
         random=masks["random"],
         interface=masks["interface"],
-        backbone=masks["backbone"],
+        baseline_flux_ranked=masks["baseline-flux-ranked"],
         low_criticality=masks["low_criticality"],
     )
 
@@ -723,23 +825,47 @@ def run_benchmark(
         fraction,
         sweep_seeds[0],
     )
+    _plot_figures(root)
+    smoke_controls = _smoke_checks(root, mask_source, masks, sweep_rows, placement_rows)
+    smoke_controls.update(
+        {
+            "deterministic_placement_pass": bool(
+                controls["same_seed_selection_digest_equal"]
+            ),
+            "no_op_equivalence_pass": bool(
+                controls["d_crystal_equals_d_mobile_noop_pass"]
+                and controls["label_only_noop_field_exact"]
+            ),
+        }
+    )
     max_flux_error = max(
         float(row[f"flux_error_{axis}"])
         for row in all_rows
         for axis in "xyz"
     )
+    canonical_numerical_acceptance = bool(
+        all(
+            bool(value)
+            for key, value in controls.items()
+            if key.endswith("_pass") or key.endswith("_equal") or key.endswith("_exact")
+        )
+        and max_flux_error < FLUX_BALANCE_TOLERANCE
+    )
+    smoke_core_acceptance = bool(all(bool(value) for value in smoke_controls.values()))
     validation = {
-        "validation_passed": bool(
-            all(
-                bool(value)
-                for key, value in controls.items()
-                if key.endswith("_pass") or key.endswith("_equal") or key.endswith("_exact")
-            )
-            and max_flux_error < FLUX_BALANCE_TOLERANCE
+        "validation_profile": validation_profile,
+        "validation_passed": (
+            canonical_numerical_acceptance and smoke_core_acceptance
+            if validation_profile == "canonical"
+            else smoke_core_acceptance
         ),
         "flux_balance_tolerance": FLUX_BALANCE_TOLERANCE,
         "maximum_flux_balance_error": max_flux_error,
+        "flux_balance_acceptance_applied": validation_profile == "canonical",
+        "canonical_numerical_acceptance": canonical_numerical_acceptance,
+        "smoke_core_acceptance": smoke_core_acceptance,
         "controls": controls,
+        "smoke_controls": smoke_controls,
         "stochastic_replicates": {
             "mobility_sweep_seed_count": len(sweep_seeds),
             "placement_comparison_seed_count": len(placement_seeds),
@@ -755,8 +881,6 @@ def run_benchmark(
         "structural_perturbation_status": "deferred",
     }
     (root / "stability_summary.json").write_text(json.dumps(stability, indent=2), encoding="utf-8")
-    _plot_figures(root)
-
     b001_manifest = json.loads((reference_dir / "manifest.json").read_text(encoding="utf-8"))
     b001_audit_path = reference_dir / "reproduction_audit.json"
     b001_audit = (
@@ -801,15 +925,17 @@ def run_benchmark(
         ),
         "benchmark001_reference_manifest": str(reference_dir / "manifest.json"),
         "headline_interpretation": (
-            "Mobility and placement consequences of crystalline-like perturbations; "
-            "not real crystallization physics"
+            "Fixed-geometry passive mobility perturbation control; 002C structural "
+            "help/hurt remains open and deferred"
         ),
+        "validation_profile": validation_profile,
     }
     (root / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     (root / "environment.json").write_text(json.dumps(_environment(), indent=2), encoding="utf-8")
     return {
         "validation_passed": validation["validation_passed"],
         "validation": validation,
+        "validation_profile": validation_profile,
         "manifest": manifest,
         "summary": summary_rows,
         "placement_summary": placement_summary_rows,

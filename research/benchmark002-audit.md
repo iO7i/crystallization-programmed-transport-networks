@@ -29,13 +29,14 @@ Date: 2026-09-10
 
 ## Interpretation boundary
 
-Benchmark 002 establishes only the measured consequences of controlled,
+Benchmark 002 establishes only the measured consequences of controlled, fixed-geometry
 phenomenological crystalline-like mobility labels and placement rules in synthetic
-voxel networks. It does not establish real polymer crystallization, PES-b-PEO
+voxel networks. The no-help result is a passive linear-diffusion control/property, not
+a claim about all real crystallization. It does not establish real polymer crystallization, PES-b-PEO
 performance, crystallization kinetics, crystal orientation physics, SCFT morphology,
 inverse design, or experimental material performance.
 
 The result did not demonstrate a beneficial mobility-only effect. Structural narrowing,
 blockage, and any possible stabilization mechanism remain deferred to a later bounded
-experiment. The flux-ranked backbone rule is retained as a hypothesis because it was
-not the most transport-degrading placement in this run.
+experiment. The baseline-flux-ranked rule is retained only as a literal operational
+hypothesis because it was not the most transport-degrading placement in this run.
