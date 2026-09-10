@@ -30,7 +30,7 @@
   "placement_modes": [
     "random",
     "interface",
-    "backbone",
+    "baseline-flux-ranked",
     "low_criticality"
   ],
   "geometry_perturbation_mode": "none; 002C deferred",
@@ -44,7 +44,7 @@
   "solver_tolerance": 1e-10,
   "flux_balance_tolerance": 1e-05,
   "boundary_conditions": "Dirichlet c=1/0 along measured axis; periodic transverse axes",
-  "runtime_seconds": 87.65571020000789,
+  "runtime_seconds": 110.54649880000215,
   "configuration": {
     "benchmark_id": "benchmark_002",
     "source_benchmark": "benchmark_001",
@@ -80,7 +80,7 @@
     "placement_modes": [
       "random",
       "interface",
-      "backbone",
+      "baseline-flux-ranked",
       "low_criticality"
     ],
     "grid_resolutions": [
@@ -95,9 +95,10 @@
     ],
     "solver_tolerance": 1e-10,
     "flux_balance_tolerance": 1e-05,
-    "geometry_perturbation_mode": "none"
+    "geometry_perturbation_mode": "none",
+    "validation_profile": "canonical"
   },
-  "configuration_digest": "e8857390dca93caf583912a4719e71fe63b5f981502acaf455098aa4389ba9a9",
+  "configuration_digest": "f7dbc3266a801d5269d4d4e9b31480f43871216ca0fcb906645c4b96706d3bb4",
   "environment": {
     "python": "3.12.12 (main, Dec  9 2025, 19:02:55) [MSC v.1944 64 bit (AMD64)]",
     "platform": "Windows-11-10.0.26200-SP0",
@@ -105,10 +106,11 @@
     "scipy": "1.18.1",
     "matplotlib": "3.11.1"
   },
-  "source_revision": "90ceafc640b5670c23eac846aad7f4786f6895f4",
-  "tracked_source_clean_before_run": true,
+  "source_revision": "f0e9f3d1b5d743c1e15462ea22d274714b14e8a0",
+  "tracked_source_clean_before_run": false,
   "benchmark001_reference_source_revision": "d903f60c1baa108f35dfcb51e1f66085fe364adc",
   "benchmark001_reference_result_revision": "00e5e4adaac97e03b9fed154ad2399d78ac1a5c8",
   "benchmark001_reference_manifest": "results\\benchmark_001\\manifest.json",
-  "headline_interpretation": "Mobility and placement consequences of crystalline-like perturbations; not real crystallization physics"
+  "headline_interpretation": "Fixed-geometry passive mobility perturbation control; 002C structural help/hurt remains open and deferred",
+  "validation_profile": "canonical"
 }

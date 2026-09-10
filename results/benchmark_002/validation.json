@@ -1,7 +1,11 @@
 {
+  "validation_profile": "canonical",
   "validation_passed": true,
   "flux_balance_tolerance": 1e-05,
   "maximum_flux_balance_error": 5.832011469732884e-07,
+  "flux_balance_acceptance_applied": true,
+  "canonical_numerical_acceptance": true,
+  "smoke_core_acceptance": true,
   "controls": {
     "benchmark001_reference_source_revision": "d903f60c1baa108f35dfcb51e1f66085fe364adc",
     "benchmark001_baseline_max_relative_error": 0.0,
@@ -18,6 +22,14 @@
     "zero_fraction_definition": "zero selected transport-phase voxels",
     "matrix_diffusivity_explicit": 0.001,
     "fraction_parameter_used_for_sample": 0.4
+  },
+  "smoke_controls": {
+    "artifact_generation_pass": true,
+    "phase_denominator_pass": true,
+    "valid_masks_pass": true,
+    "fail_closed_inputs_pass": true,
+    "deterministic_placement_pass": true,
+    "no_op_equivalence_pass": true
   },
   "stochastic_replicates": {
     "mobility_sweep_seed_count": 3,

@@ -192,7 +192,7 @@
       },
       "grid_placement_comparison": {
         "gyroid_level_set": {
-          "backbone": {
+          "baseline-flux-ranked": {
             "topology_states_by_resolution": [
               [
                 true,
