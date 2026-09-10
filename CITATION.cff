@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+title: "Crystallization-Programmed Transport Networks"
+message: "If this software contributes to published work, please cite the repository revision used."
+type: software
+authors:
+  - family-names: Al-Khairat
+    given-names: Hosam
+    affiliation: Independent research-software project
+version: 0.1.0-alpha
+date-released: 2026-09-10
+license: Apache-2.0
+repository-code: https://github.com/hosamalkhairat/crystallization-programmed-transport
+

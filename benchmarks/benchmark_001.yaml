@@ -1,0 +1,22 @@
+benchmark_id: benchmark_001
+question: "At fixed conducting-phase fraction and intrinsic coefficients, how strongly can morphology alter transport?"
+code_revision: "filled in manifest.json at execution time"
+seed: 20260910
+grid_resolution: 32
+physical_dimensions: [1.0, 1.0, 1.0]
+voxel_spacing: "1 / grid_resolution"
+phase_fraction_target: 0.4
+transport_phase: "boolean phase == true"
+D_transport: 1.0
+D_matrix: 0.0001
+periodic_axes: [true, true, true]
+boundary_conditions: "Dirichlet c=1/0 along measured axis; periodic transverse axes"
+solver: "cell-centred finite volume; harmonic face conductance; scipy conjugate gradient"
+solver_tolerance: 1.0e-8
+validation_reference: "uniform medium plus series/parallel laminate limits"
+morphologies:
+  - lamellae
+  - cylinders
+  - gyroid_level_set
+  - gaussian_random_field
+

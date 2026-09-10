@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crystal-transport"
+version = "0.1.0a0"
+description = "Reproducible morphology-to-transport benchmarks for crystallization-programmed transport research"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "Hosam Al-Khairat" }]
+dependencies = [
+  "matplotlib>=3.8,<4",
+  "numpy>=1.26,<3",
+  "scipy>=1.11,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+  "build>=1.2,<2",
+  "mypy>=1.11,<2",
+  "pytest>=8,<9",
+  "ruff>=0.6,<1",
+]
+
+[project.scripts]
+crystal-transport = "crystal_transport.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.10"
+files = ["src/crystal_transport"]
+ignore_missing_imports = true
+check_untyped_defs = true
+

@@ -1,0 +1,57 @@
+- id: ikehara2010interpenetrating
+  title: "Miscibility enhancement and formation of interpenetrating spherulites in ternary blends of crystalline polymers"
+  year: 2010
+  doi: 10.1002/polb.21940
+  material_system: PBS/PES/POE crystalline blend
+  method: microscopy and crystallization comparison
+  relationship_to_project: verifies the lineage question about interpenetrating growth and sequential crystallization
+  reproduced: false
+- id: ikehara2018mobility
+  title: "The degree of crystallinity and segmental mobility in interpenetrating spherulites of poly(butylene succinate) and poly(ethylene oxide)"
+  year: 2018
+  doi: 10.1038/s41428-018-0029-7
+  material_system: PBS/PEO blend
+  method: pulsed NMR and crystallinity analysis
+  relationship_to_project: motivates keeping mobility distinct from morphology and connectivity
+  reproduced: false
+- id: loo2002modes
+  title: "Modes of Crystallization in Block Copolymer Microdomains: Breakout, Templated, and Confined"
+  year: 2002
+  doi: 10.1021/ma011824j
+  material_system: polyethylene-containing block copolymers
+  method: melt/solid morphology and crystallization kinetics
+  relationship_to_project: supports the explicit separation of microphase morphology from crystallization history
+  reproduced: false
+- id: alharbe2017orientation
+  title: "Orientation Control and Crystallization in a Soft Confined Phase Separated Block Copolymer"
+  year: 2017
+  doi: 10.1021/acs.macromol.6b02361
+  material_system: crystallizable/amorphous cylindrical block copolymer
+  method: AFM and in situ crystallization study
+  relationship_to_project: supports orientation as a control and descriptor
+  reproduced: false
+- id: dai2022topology
+  title: "Topology mediates transport of nanoparticles in macromolecular networks"
+  year: 2022
+  doi: 10.1038/s41467-022-31861-9
+  material_system: model macromolecular networks
+  method: theory and simulation
+  relationship_to_project: supports topology as a transport-relevant variable without being the same transport mechanism
+  reproduced: false
+- id: mcketta2020morphology
+  title: "Connecting Solute Diffusion to Morphology in Triblock Copolymer Membranes"
+  year: 2020
+  doi: 10.1021/acs.macromol.0c00104
+  material_system: triblock copolymer membranes
+  method: SCFT morphology library and lattice random walk
+  relationship_to_project: adjacent morphology-to-transport workflow; not a substitute for crystallization modeling
+  reproduced: false
+- id: tsai2022pso
+  title: "Using Particle Swarm Optimization and Self-Consistent Field Theory to Discover Globally Stable Morphologies of Block Copolymers"
+  year: 2022
+  doi: 10.1021/acs.macromol.2c00042
+  material_system: block copolymer melts
+  method: particle swarm optimization coupled to SCFT
+  relationship_to_project: establishes that morphology search and inverse-adjacent methods already exist
+  reproduced: false
+

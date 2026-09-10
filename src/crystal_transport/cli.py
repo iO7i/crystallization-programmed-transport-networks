@@ -1,0 +1,40 @@
+"""Command-line entry point for the reproducible benchmark."""
+
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+
+from .benchmark001 import run_benchmark
+from .validation import run_validation, validation_passes
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(prog="crystal-transport")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+    validate_parser = subparsers.add_parser("validate", help="run analytical solver validations")
+    validate_parser.add_argument("--resolution", type=int, default=16)
+    benchmark_parser = subparsers.add_parser("benchmark", help="run a named benchmark")
+    benchmark_subparsers = benchmark_parser.add_subparsers(dest="benchmark_command", required=True)
+    run_parser = benchmark_subparsers.add_parser("run", help="execute a benchmark")
+    run_parser.add_argument("name", choices=["benchmark_001"])
+    run_parser.add_argument("--output", type=Path, default=Path("results/benchmark_001"))
+    run_parser.add_argument("--resolution", type=int, default=32)
+    args = parser.parse_args()
+    if args.command == "validate":
+        result = run_validation(shape=(args.resolution,) * 3)
+        print(json.dumps(result, indent=2))
+        return 0 if validation_passes(result) else 1
+    result = run_benchmark(output_dir=args.output, resolution=args.resolution)
+    print(
+        json.dumps(
+            {"validation_passed": result["validation_passed"], "output": str(args.output)},
+            indent=2,
+        )
+    )
+    return 0 if result["validation_passed"] else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
