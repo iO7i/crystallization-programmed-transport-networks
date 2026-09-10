@@ -21,6 +21,8 @@ from .morphology import Morphology
 from .transport import FLUX_BALANCE_TOLERANCE, solve_effective_diffusivity
 from .validation import run_validation, validation_passes
 
+SOLVER_RTOL = 1.0e-10
+
 
 def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     if not rows:
@@ -194,7 +196,7 @@ def run_benchmark(
         "convergence_resolutions": list(convergence_resolutions),
         "contrast_values": list(contrast_values),
         "contrast_resolution": contrast_resolution,
-        "solver_tolerance": 1.0e-8,
+        "solver_tolerance": SOLVER_RTOL,
         "flux_balance_tolerance": FLUX_BALANCE_TOLERANCE,
     }
     morphologies = canonical_morphologies((resolution,) * 3, fraction=fraction, seed=seed)
@@ -222,7 +224,7 @@ def run_benchmark(
                 axis=axis,
                 d_transport=d_transport,
                 d_matrix=d_matrix,
-                rtol=1.0e-8,
+                rtol=SOLVER_RTOL,
                 maxiter=20000,
             )
             transport_rows.append(
@@ -270,7 +272,7 @@ def run_benchmark(
                     axis=axis,
                     d_transport=d_transport,
                     d_matrix=d_matrix,
-                    rtol=1.0e-8,
+                    rtol=SOLVER_RTOL,
                     maxiter=20000,
                 )
                 convergence_rows.append(
@@ -342,7 +344,7 @@ def run_benchmark(
                     axis=axis,
                     d_transport=d_transport,
                     d_matrix=current_d_matrix,
-                    rtol=1.0e-8,
+                    rtol=SOLVER_RTOL,
                     maxiter=20000,
                 )
                 contrast_rows.append(
@@ -389,7 +391,7 @@ def run_benchmark(
         },
         "boundary_conditions": "Dirichlet c=1/0 along measured axis; periodic transverse axes",
         "solver": "cell-centred finite volume with harmonic face conductance and scipy CG",
-        "solver_tolerance": 1.0e-8,
+        "solver_tolerance": SOLVER_RTOL,
         "flux_balance_tolerance": FLUX_BALANCE_TOLERANCE,
         "validation_reference": "uniform medium and series/parallel laminate limits",
         "runtime_seconds": time.perf_counter() - start,
