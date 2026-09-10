@@ -12,10 +12,16 @@ from .morphology import Morphology
 
 def _coordinates(shape: tuple[int, int, int]) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     axes = [np.arange(n, dtype=float) / n for n in shape]
-    return np.meshgrid(*axes, indexing="ij")
+    grid = np.meshgrid(*axes, indexing="ij")
+    return grid[0], grid[1], grid[2]
 
 
 def _quantile_phase(field: np.ndarray, fraction: float) -> np.ndarray:
+    phase, _, _ = _rank_phase(field, fraction)
+    return phase
+
+
+def _rank_phase(field: np.ndarray, fraction: float) -> tuple[np.ndarray, float, int]:
     if not 0 < fraction < 1:
         raise ValueError("fraction must be strictly between zero and one")
     # Quantile ties can make the measured fraction drift. Deterministically select
@@ -25,7 +31,8 @@ def _quantile_phase(field: np.ndarray, fraction: float) -> np.ndarray:
     selected = flat_order[-target:]
     exact = np.zeros(field.size, dtype=bool)
     exact[selected] = True
-    return exact.reshape(field.shape)
+    threshold = float(np.sort(field.ravel())[-target])
+    return exact.reshape(field.shape), threshold, target
 
 
 def lamellae(
@@ -51,7 +58,7 @@ def lamellae(
     coordinate = np.broadcast_to(
         coordinate_1d.reshape(tuple(n if i == axis else 1 for i in range(3))), shape
     )
-    phase = _quantile_phase(-coordinate, fraction)
+    phase, threshold, target = _rank_phase(-coordinate, fraction)
     return Morphology(
         phase=phase,
         name="lamellae",
@@ -59,6 +66,9 @@ def lamellae(
             "fraction_target": fraction,
             "axis": axis,
             "period_voxels": period,
+            "rank_field": "negative periodic layer coordinate",
+            "rank_threshold": threshold,
+            "target_voxels": target,
         },
     )
 
@@ -90,11 +100,20 @@ def cylinders(
             du = np.minimum(du, 1.0 - du)
             dv = np.minimum(dv, 1.0 - dv)
             field = np.minimum(field, np.sqrt(du**2 + dv**2))
-    phase = _quantile_phase(-field, fraction)
+    phase, threshold, target = _rank_phase(-field, fraction)
+    nominal_radius = np.sqrt(fraction / np.pi) / 2.0
     return Morphology(
         phase=phase,
         name="cylinders",
-        parameters={"fraction_target": fraction, "axis": axis, "lattice": "square"},
+        parameters={
+            "fraction_target": fraction,
+            "axis": axis,
+            "lattice": "square",
+            "rank_field": "negative distance to periodic cylinder centers",
+            "rank_threshold": threshold,
+            "target_voxels": target,
+            "nominal_continuum_radius_fraction_of_cell": nominal_radius,
+        },
     )
 
 
@@ -116,11 +135,17 @@ def gyroid_level_set(
         + np.sin(two_pi * y) * np.cos(two_pi * z)
         + np.sin(two_pi * z) * np.cos(two_pi * x)
     )
-    phase = _quantile_phase(field, fraction)
+    phase, threshold, target = _rank_phase(field, fraction)
     return Morphology(
         phase=phase,
         name="gyroid_level_set",
-        parameters={"fraction_target": fraction, "level_set": "G > quantile"},
+        parameters={
+            "fraction_target": fraction,
+            "rank_field": "first-harmonic gyroid field",
+            "rank_threshold": threshold,
+            "target_voxels": target,
+            "level_set_interpretation": "one thresholded level-set phase; not a double gyroid",
+        },
     )
 
 
@@ -139,11 +164,19 @@ def bicontinuous_reference(
     white = rng.standard_normal(shape)
     # Periodic convolution avoids a special boundary treatment at the edges.
     field = gaussian_filter(white, sigma=max(shape) / 14.0, mode="wrap")
-    phase = _quantile_phase(field, fraction)
+    phase, threshold, target = _rank_phase(field, fraction)
     return Morphology(
         phase=phase,
         name="gaussian_random_field",
-        parameters={"fraction_target": fraction, "seed": seed, "filter_mode": "periodic"},
+        parameters={
+            "fraction_target": fraction,
+            "seed": seed,
+            "filter_mode": "periodic",
+            "gaussian_sigma_voxels": max(shape) / 14.0,
+            "rank_field": "periodic Gaussian-filtered white noise",
+            "rank_threshold": threshold,
+            "target_voxels": target,
+        },
     )
 
 

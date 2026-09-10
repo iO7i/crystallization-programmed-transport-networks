@@ -8,7 +8,9 @@ voxel_spacing: "1 / grid_resolution"
 phase_fraction_target: 0.4
 transport_phase: "boolean phase == true"
 D_transport: 1.0
-D_matrix: 0.0001
+D_matrix: 0.001
+contrast_sensitivity_values: [0.01, 0.001, 0.0001]
+contrast_sensitivity_resolution: 16
 periodic_axes: [true, true, true]
 boundary_conditions: "Dirichlet c=1/0 along measured axis; periodic transverse axes"
 solver: "cell-centred finite volume; harmonic face conductance; scipy conjugate gradient"
@@ -19,4 +21,3 @@ morphologies:
   - cylinders
   - gyroid_level_set
   - gaussian_random_field
-

@@ -10,12 +10,16 @@ from scipy.sparse.linalg import cg
 
 from .morphology import Morphology
 
+FLUX_BALANCE_TOLERANCE = 1.0e-5
+
 
 @dataclass(frozen=True)
 class TransportResult:
     axis: int
     effective_diffusivity: float
     flux: float
+    high_flux: float
+    flux_balance_error: float
     residual_norm: float
     iterations: int
     concentration: np.ndarray
@@ -81,8 +85,8 @@ def _assemble_system(
     # A periodic morphology still represents a finite transport experiment along
     # the measured direction: omit its periodic edge and attach Dirichlet ends.
     ids = np.arange(np.prod(shape), dtype=np.int64).reshape(shape)
-    low_slice = [slice(None)] * 3
-    high_slice = [slice(None)] * 3
+    low_slice: list[slice | int] = [slice(None)] * 3
+    high_slice: list[slice | int] = [slice(None)] * 3
     low_slice[axis] = 0
     high_slice[axis] = shape[axis] - 1
     low_ids = ids[tuple(low_slice)].ravel()
@@ -173,16 +177,32 @@ def solve_effective_diffusivity(
     residual_norm = float(np.linalg.norm(residual) / max(np.linalg.norm(rhs), 1.0))
     concentration = solution.reshape(morphology.shape)
     ids = np.arange(np.prod(morphology.shape), dtype=np.int64).reshape(morphology.shape)
-    low_slice = [slice(None)] * 3
+    low_slice: list[slice | int] = [slice(None)] * 3
     low_slice[axis] = 0
     low_ids = ids[tuple(low_slice)].ravel()
     low_diffusivity = diffusivity[low_ids]
     spacing = morphology.spacing[axis]
+    high_slice: list[slice | int] = [slice(None)] * 3
+    high_slice[axis] = morphology.shape[axis] - 1
+    high_ids = ids[tuple(high_slice)].ravel()
+    high_diffusivity = diffusivity[high_ids]
     low_fluxes = low_diffusivity * 2.0 / spacing * (low_value - solution[low_ids])
+    high_fluxes = high_diffusivity * 2.0 / spacing * (solution[high_ids] - high_value)
     flux = float(np.mean(low_fluxes))
+    high_flux = float(np.mean(high_fluxes))
+    flux_balance_error = abs(flux - high_flux) / max(abs(flux), abs(high_flux), 1.0e-30)
     length = morphology.physical_size[axis]
     effective = flux * length / (low_value - high_value)
-    return TransportResult(axis, float(effective), flux, residual_norm, iterations, concentration)
+    return TransportResult(
+        axis,
+        float(effective),
+        flux,
+        high_flux,
+        float(flux_balance_error),
+        residual_norm,
+        iterations,
+        concentration,
+    )
 
 
 def analytical_laminate_diffusivity(

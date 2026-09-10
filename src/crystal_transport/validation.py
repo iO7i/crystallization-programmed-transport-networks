@@ -2,9 +2,15 @@
 
 from __future__ import annotations
 
+from typing import Any, cast
+
 from .generators import lamellae
 from .morphology import Morphology
-from .transport import analytical_laminate_diffusivity, solve_effective_diffusivity
+from .transport import (
+    FLUX_BALANCE_TOLERANCE,
+    analytical_laminate_diffusivity,
+    solve_effective_diffusivity,
+)
 
 
 def _uniform(shape: tuple[int, int, int], value: bool = True) -> Morphology:
@@ -22,13 +28,18 @@ def run_validation(
     """Run uniform and laminate-limit checks without hard-coding solver output."""
 
     uniform = _uniform(shape)
-    uniform_results = []
+    uniform_results: list[dict[str, Any]] = []
     for axis in range(3):
         result = solve_effective_diffusivity(
             uniform, axis=axis, d_transport=d_transport, d_matrix=d_transport
         )
         uniform_results.append(
-            {"axis": axis, "numerical": result.effective_diffusivity, "expected": d_transport}
+            {
+                "axis": axis,
+                "numerical": result.effective_diffusivity,
+                "expected": d_transport,
+                "flux_balance_error": result.flux_balance_error,
+            }
         )
 
     # Use an exactly representable 50/50 laminate for the analytical limit;
@@ -46,7 +57,7 @@ def run_validation(
     expected_series = analytical_laminate_diffusivity(
         laminate.volume_fraction, d_transport, d_matrix, parallel=False
     )
-    result = {
+    validation_result: dict[str, Any] = {
         "uniform": uniform_results,
         "laminate": [
             {
@@ -55,6 +66,7 @@ def run_validation(
                 "expected": expected_series,
                 "relative_error": abs(normal.effective_diffusivity - expected_series)
                 / expected_series,
+                "flux_balance_error": normal.flux_balance_error,
             },
             {
                 "axis": 1,
@@ -62,6 +74,7 @@ def run_validation(
                 "expected": expected_parallel,
                 "relative_error": abs(transverse.effective_diffusivity - expected_parallel)
                 / expected_parallel,
+                "flux_balance_error": transverse.flux_balance_error,
             },
         ],
         "parameters": {
@@ -73,16 +86,24 @@ def run_validation(
             "d_matrix": d_matrix,
         },
     }
-    return result
+    return validation_result
 
 
 def validation_passes(result: dict[str, object], tolerance: float = 2.0e-2) -> bool:
-    uniform = result["uniform"]
-    laminate = result["laminate"]
-    return all(
+    uniform = cast(list[dict[str, Any]], result["uniform"])
+    laminate = cast(list[dict[str, Any]], result["laminate"])
+    uniform_ok = all(
         abs(float(item["numerical"]) - float(item["expected"])) / float(item["expected"])
         < tolerance
-        for item in uniform  # type: ignore[union-attr]
-    ) and all(
-        float(item["relative_error"]) < tolerance for item in laminate  # type: ignore[union-attr]
+        for item in uniform
     )
+    uniform_flux_ok = all(
+        float(item["flux_balance_error"]) < FLUX_BALANCE_TOLERANCE
+        for item in uniform
+    )
+    laminate_ok = all(
+        float(item["relative_error"]) < tolerance
+        and float(item["flux_balance_error"]) < FLUX_BALANCE_TOLERANCE
+        for item in laminate
+    )
+    return uniform_ok and uniform_flux_ok and laminate_ok

@@ -43,7 +43,7 @@ class Morphology:
 
     @property
     def shape(self) -> tuple[int, int, int]:
-        return tuple(int(value) for value in self.phase.shape)
+        return (int(self.phase.shape[0]), int(self.phase.shape[1]), int(self.phase.shape[2]))
 
     @property
     def volume_fraction(self) -> float:
@@ -53,7 +53,11 @@ class Morphology:
 
     @property
     def physical_size(self) -> tuple[float, float, float]:
-        return tuple(n * h for n, h in zip(self.shape, self.spacing, strict=True))
+        return (
+            self.shape[0] * self.spacing[0],
+            self.shape[1] * self.spacing[1],
+            self.shape[2] * self.spacing[2],
+        )
 
     def content_digest(self) -> str:
         """Return a stable digest of data and provenance-defining metadata."""

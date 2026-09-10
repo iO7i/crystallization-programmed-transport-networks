@@ -96,7 +96,7 @@ def analyze_connectivity(morphology: Morphology) -> ConnectivityMetrics:
     return ConnectivityMetrics(
         components=component_count,
         largest_component_fraction=largest_fraction,
-        percolates=tuple(percolates),
+        percolates=(percolates[0], percolates[1], percolates[2]),
         phase_fraction=float(np.mean(phase)),
     )
 
@@ -120,3 +120,43 @@ def interfacial_area_density(morphology: Morphology) -> float:
         area += float(np.count_nonzero(faces)) * face_area
     volume = float(np.prod(morphology.physical_size))
     return area / volume
+
+
+def mean_phase_chord_length(morphology: Morphology, axis: int) -> float:
+    """Return mean contiguous transport-phase chord length along scan lines.
+
+    A chord is a maximal face-connected run along one coordinate line. Periodic
+    lines join the first and last run when the phase wraps. The result is a
+    geometric descriptor in the same length units as ``morphology.spacing``;
+    it is not a tortuosity or a transport-derived length.
+    """
+
+    if axis not in (0, 1, 2):
+        raise ValueError("axis must be 0, 1, or 2")
+    moved = np.moveaxis(morphology.phase, axis, 0)
+    lines = moved.reshape(moved.shape[0], -1).T
+    lengths: list[int] = []
+    for line in lines:
+        if not np.any(line):
+            continue
+        if morphology.periodic_axes[axis] and np.all(line):
+            lengths.append(line.size)
+            continue
+        starts = np.flatnonzero(line & ~np.roll(line, 1))
+        for start in starts:
+            length = 0
+            index = int(start)
+            while line[index]:
+                length += 1
+                index += 1
+                if index == line.size:
+                    if morphology.periodic_axes[axis]:
+                        index = 0
+                    else:
+                        break
+                if index == start:
+                    break
+            lengths.append(length)
+    if not lengths:
+        return 0.0
+    return float(np.mean(lengths) * morphology.spacing[axis])
