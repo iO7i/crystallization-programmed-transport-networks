@@ -1,0 +1,50 @@
+{
+  "uniform": [
+    {
+      "axis": 0,
+      "numerical": 1.000000000000009,
+      "expected": 1.0,
+      "flux_balance_error": 9.769962616701289e-15
+    },
+    {
+      "axis": 1,
+      "numerical": 1.0000000000000056,
+      "expected": 1.0,
+      "flux_balance_error": 7.216449660063478e-15
+    },
+    {
+      "axis": 2,
+      "numerical": 1.000000000000005,
+      "expected": 1.0,
+      "flux_balance_error": 1.6209256159527203e-14
+    }
+  ],
+  "laminate": [
+    {
+      "axis": 0,
+      "numerical": 0.0019980019980354313,
+      "expected": 0.001998001998001998,
+      "relative_error": 1.6733379439026752e-11,
+      "flux_balance_error": 2.0699884080780395e-11
+    },
+    {
+      "axis": 1,
+      "numerical": 0.500499993420583,
+      "expected": 0.5005,
+      "relative_error": 1.314568811226293e-08,
+      "flux_balance_error": 2.438935295565143e-08
+    }
+  ],
+  "parameters": {
+    "shape": [
+      16,
+      16,
+      16
+    ],
+    "fraction_requested": 0.4,
+    "validation_laminate_fraction": 0.5,
+    "fraction_actual": 0.5,
+    "d_transport": 1.0,
+    "d_matrix": 0.001
+  }
+}

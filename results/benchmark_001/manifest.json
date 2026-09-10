@@ -1,0 +1,81 @@
+{
+  "benchmark_id": "benchmark_001",
+  "benchmark_question": "At fixed phase fraction and intrinsic coefficients, how much can morphology alter transport?",
+  "resolution": 32,
+  "seed": 20260910,
+  "physical_dimensions": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "voxel_spacing": [
+    0.03125,
+    0.03125,
+    0.03125
+  ],
+  "phase_fraction_target": 0.4,
+  "phase_fraction_actual": {
+    "lamellae": 0.399993896484375,
+    "cylinders": 0.399993896484375,
+    "gyroid_level_set": 0.399993896484375,
+    "gaussian_random_field": 0.399993896484375
+  },
+  "transport_phase": "boolean phase == true",
+  "d_transport": 1.0,
+  "d_matrix": 0.001,
+  "contrast_sensitivity": {
+    "resolution": 16,
+    "d_matrix_values": [
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "ratio_values": [
+      100.0,
+      1000.0,
+      10000.0
+    ]
+  },
+  "boundary_conditions": "Dirichlet c=1/0 along measured axis; periodic transverse axes",
+  "solver": "cell-centred finite volume with harmonic face conductance and scipy CG",
+  "solver_tolerance": 1e-10,
+  "flux_balance_tolerance": 1e-05,
+  "validation_reference": "uniform medium and series/parallel laminate limits",
+  "runtime_seconds": 42.62611260000267,
+  "convergence_resolutions": [
+    16,
+    24,
+    32
+  ],
+  "configuration": {
+    "benchmark_id": "benchmark_001",
+    "resolution": 32,
+    "fraction": 0.4,
+    "d_transport": 1.0,
+    "d_matrix": 0.001,
+    "seed": 20260910,
+    "convergence_resolutions": [
+      16,
+      24,
+      32
+    ],
+    "contrast_values": [
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "contrast_resolution": 16,
+    "solver_tolerance": 1e-10,
+    "flux_balance_tolerance": 1e-05
+  },
+  "configuration_digest": "09e7dab73b667c716b509cdb93dd5618bc81d9e01558e0589ef46b8de7e5a897",
+  "environment": {
+    "python": "3.12.12 (main, Dec  9 2025, 19:02:55) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.1"
+  },
+  "source_revision": "d903f60c1baa108f35dfcb51e1f66085fe364adc",
+  "tracked_source_clean_before_run": true
+}

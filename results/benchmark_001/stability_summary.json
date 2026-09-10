@@ -1,0 +1,214 @@
+{
+  "cylinders": {
+    "percolation_states_by_resolution": [
+      [
+        false,
+        false,
+        true
+      ],
+      [
+        false,
+        false,
+        true
+      ],
+      [
+        false,
+        false,
+        true
+      ]
+    ],
+    "component_counts_by_resolution": [
+      4,
+      4,
+      4
+    ],
+    "topology_state_stable": true,
+    "transport_relative_range_by_axis": {
+      "axis_0": 0.16020415901855975,
+      "axis_1": 0.10036352034298396,
+      "axis_2": 0.000973943858006154
+    },
+    "phase_fraction_relative_range": 0.00031647858796293726,
+    "interfacial_area_density_by_resolution": {
+      "16": 0.33154296875,
+      "24": 0.25014467592592593,
+      "32": 0.17193603515625
+    },
+    "mean_chord_lengths_by_resolution": {
+      "16": {
+        "x": 5.024539877300613,
+        "y": 4.653409090909091,
+        "z": 15.902912621359222
+      },
+      "24": {
+        "x": 6.400462962962963,
+        "y": 6.400462962962963,
+        "z": 23.939393939393938
+      },
+      "32": {
+        "x": 9.308948863636363,
+        "y": 9.308948863636363,
+        "z": 31.96829268292683
+      }
+    }
+  },
+  "gaussian_random_field": {
+    "percolation_states_by_resolution": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "component_counts_by_resolution": [
+      5,
+      1,
+      2
+    ],
+    "topology_state_stable": false,
+    "transport_relative_range_by_axis": {
+      "axis_0": 0.15797852306653312,
+      "axis_1": 0.29660379812813376,
+      "axis_2": 0.39498148078840806
+    },
+    "phase_fraction_relative_range": 0.00031647858796293726,
+    "interfacial_area_density_by_resolution": {
+      "16": 0.57666015625,
+      "24": 0.39655671296296297,
+      "32": 0.26776123046875
+    },
+    "mean_chord_lengths_by_resolution": {
+      "16": {
+        "x": 4.157360406091371,
+        "y": 4.254545454545455,
+        "z": 4.0344827586206895
+      },
+      "24": {
+        "x": 6.137624861265261,
+        "y": 5.920770877944325,
+        "z": 6.097023153252481
+      },
+      "32": {
+        "x": 8.583497053045187,
+        "y": 9.308948863636363,
+        "z": 8.965116279069768
+      }
+    }
+  },
+  "gyroid_level_set": {
+    "percolation_states_by_resolution": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "component_counts_by_resolution": [
+      1,
+      1,
+      1
+    ],
+    "topology_state_stable": true,
+    "transport_relative_range_by_axis": {
+      "axis_0": 0.06776544210488018,
+      "axis_1": 0.06759007730673751,
+      "axis_2": 0.06762381321573538
+    },
+    "phase_fraction_relative_range": 0.00031647858796293726,
+    "interfacial_area_density_by_resolution": {
+      "16": 0.298828125,
+      "24": 0.1996527777777778,
+      "32": 0.14910888671875
+    },
+    "mean_chord_lengths_by_resolution": {
+      "16": {
+        "x": 7.654205607476635,
+        "y": 7.654205607476635,
+        "z": 7.654205607476635
+      },
+      "24": {
+        "x": 11.378600823045268,
+        "y": 11.378600823045268,
+        "z": 11.378600823045268
+      },
+      "32": {
+        "x": 15.17013888888889,
+        "y": 15.152601156069364,
+        "z": 15.17013888888889
+      }
+    }
+  },
+  "lamellae": {
+    "percolation_states_by_resolution": [
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        false,
+        true,
+        true
+      ]
+    ],
+    "component_counts_by_resolution": [
+      1,
+      1,
+      1
+    ],
+    "topology_state_stable": true,
+    "transport_relative_range_by_axis": {
+      "axis_0": 0.009645645549146369,
+      "axis_1": 0.013084665838119057,
+      "axis_2": 0.0007726273087508464
+    },
+    "phase_fraction_relative_range": 0.00031647858796293726,
+    "interfacial_area_density_by_resolution": {
+      "16": 0.13330078125,
+      "24": 0.08695023148148148,
+      "32": 0.06451416015625
+    },
+    "mean_chord_lengths_by_resolution": {
+      "16": {
+        "x": 6.3984375,
+        "y": 14.625,
+        "z": 15.902912621359222
+      },
+      "24": {
+        "x": 9.600694444444445,
+        "y": 23.041666666666668,
+        "z": 23.939393939393938
+      },
+      "32": {
+        "x": 12.7998046875,
+        "y": 31.50721153846154,
+        "z": 31.96829268292683
+      }
+    }
+  }
+}
