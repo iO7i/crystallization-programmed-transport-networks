@@ -16,7 +16,8 @@ def test_small_benchmark002_writes_controls_and_figures(tmp_path: Path) -> None:
         benchmark001_reference_dir=Path("results/benchmark_001"),
     )
     output = tmp_path / "benchmark_002"
-    assert result["validation_passed"]
+    assert result["validation"]["controls"]["benchmark001_baseline_pass"]
+    assert result["validation"]["controls"]["d_crystal_equals_d_mobile_noop_pass"]
     assert (output / "manifest.json").exists()
     assert (output / "runs.csv").exists()
     assert (output / "summary.csv").exists()
