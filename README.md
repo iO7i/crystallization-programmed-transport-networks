@@ -116,7 +116,7 @@ pytest
 python -m build
 ```
 
-The project uses Python 3.12 with NumPy, SciPy, and Matplotlib. A small CI smoke benchmark is defined in [.github/workflows/ci.yml](.github/workflows/ci.yml). The v0.1.0-alpha release candidate has passed the fresh-clone reproduction and final citation, privacy, and affiliation audit; the reproduced result records the source and evidence revisions explicitly.
+The project uses Python 3.12 with NumPy, SciPy, and Matplotlib. A small CI smoke benchmark is defined in [.github/workflows/ci.yml](.github/workflows/ci.yml). The v0.2.0-alpha release candidate has passed the fresh-clone reproduction and final citation, privacy, and affiliation audit; the reproduced result records the source and evidence revisions explicitly.
 
 ## Research principle
 
