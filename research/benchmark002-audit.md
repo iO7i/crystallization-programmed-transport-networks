@@ -4,16 +4,24 @@ Date: 2026-09-10
 
 ## Reproduction
 
-- Canonical source revision: `90ceafc640b5670c23eac846aad7f4786f6895f4`.
-- Committed result/evidence revision: `8e456e6e7a09faaf25dffb14591f815f17257eeb`.
-- Fresh clone: the public `benchmark-002` branch at the evidence revision.
-- Environment: Python 3.12.12, NumPy 2.5.3, SciPy 1.18.1, Matplotlib 3.11.1.
+- Canonical source revision: `32757a31d697025f7f84c06b7ce5a793810d96a1`.
+- Committed result/evidence revision: `e10993ae28c4d85f968874baf867efea64829517`.
+- Fresh clone: the public `benchmark-002` branch at the evidence revision, with a newly
+  created environment.
+- Canonical environment: Python 3.12.12, NumPy 2.5.3, SciPy 1.18.1, Matplotlib 3.11.1.
+- Fresh-clone environment: Python 3.12.10, NumPy 2.5.3, SciPy 1.18.1, Matplotlib 3.11.1.
 - Exact command: `python -m crystal_transport.cli benchmark run benchmark_002 --resolution 16 --output results/benchmark_002`.
 - Numeric comparison: relative tolerance `1e-10`, absolute tolerance `1e-12`; all
   machine-readable metrics passed.
 - Bitwise comparison: all CSV/JSON evidence files except the provenance manifest,
-  all three figures, and the saved placement masks matched. The manifest's runtime and
-  public-clone source revision are expected provenance differences.
+  all three figures, and the saved placement masks matched. The environment Python
+  build string, manifest runtime, and public-clone source revision are expected
+  provenance/environment differences; no bitwise claim is made for them.
+- CI smoke command: `crystal-transport benchmark run benchmark_002 --resolution 8
+  --validation-profile smoke --output ci-results/benchmark_002`. Its explicit smoke
+  profile checks artifact generation, deterministic placement, no-op equivalence,
+  denominator accounting, valid masks, and fail-closed inputs. It does not replace
+  canonical numerical acceptance.
 
 ## Scientific checks
 
@@ -26,6 +34,8 @@ Date: 2026-09-10
   while exact normalized values remain resolution-dependent.
 - Matrix contrast `D_matrix = 1e-2, 1e-3, 1e-4` does not remove the placement effect.
 - No connectivity transition is claimed: 002A and 002B preserve geometry by design.
+- The earlier `rtol=1e-8` flux-balance failure remains recorded in
+  `research/negative-results.md`; it is not presented as first-pass success.
 
 ## Interpretation boundary
 
@@ -37,6 +47,7 @@ performance, crystallization kinetics, crystal orientation physics, SCFT morphol
 inverse design, or experimental material performance.
 
 The result did not demonstrate a beneficial mobility-only effect. Structural narrowing,
-blockage, and any possible stabilization mechanism remain deferred to a later bounded
-experiment. The baseline-flux-ranked rule is retained only as a literal operational
-hypothesis because it was not the most transport-degrading placement in this run.
+blockage, and any possible stabilization mechanism remain deferred to 002C, where the
+help-versus-hurt question becomes open. The `baseline-flux-ranked` rule is retained only
+as a literal operational hypothesis because it was not the most transport-degrading
+placement in this run.

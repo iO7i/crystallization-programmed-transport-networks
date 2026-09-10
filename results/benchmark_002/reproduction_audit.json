@@ -1,9 +1,9 @@
 {
   "reproduction_command": "python -m crystal_transport.cli benchmark run benchmark_002 --resolution 16 --output results/benchmark_002",
-  "reference_result_commit": "8e456e6e7a09faaf25dffb14591f815f17257eeb",
-  "reproducing_clone_commit": "8e456e6e7a09faaf25dffb14591f815f17257eeb",
-  "canonical_source_revision": "90ceafc640b5670c23eac846aad7f4786f6895f4",
-  "source_revision_difference_explanation": "The committed result was generated before the evidence commit; the fresh clone runs the same source from the public evidence commit.",
+  "reference_result_commit": "e10993ae28c4d85f968874baf867efea64829517",
+  "reproducing_clone_commit": "e10993ae28c4d85f968874baf867efea64829517",
+  "canonical_source_revision": "32757a31d697025f7f84c06b7ce5a793810d96a1",
+  "source_revision_difference_explanation": "The reference result was generated from the clean canonical source revision; the fresh clone runs the same production source from the result/evidence commit. Only provenance fields differ.",
   "clean_clone": true,
   "machine_readable_numeric_tolerances": {
     "relative": 1e-10,
@@ -21,7 +21,7 @@
     "morphology_metrics.csv": true,
     "validation.json": true,
     "stability_summary.json": true,
-    "environment.json": true,
+    "environment.json": false,
     "manifest.json": false
   },
   "figures_and_mask_hashes": {
@@ -31,22 +31,23 @@
       "bitwise_equal": true
     },
     "figures/placement_comparison.png": {
-      "reference_sha256": "cde38931d815449c1bd1792c7d420ccabc141c6b77d8d711169db93c6d950bac",
-      "reproduced_sha256": "cde38931d815449c1bd1792c7d420ccabc141c6b77d8d711169db93c6d950bac",
+      "reference_sha256": "9f3bc01138955686bf087cdb5bd75c1387c980e5e1572fc8434e330b16f897d9",
+      "reproduced_sha256": "9f3bc01138955686bf087cdb5bd75c1387c980e5e1572fc8434e330b16f897d9",
       "bitwise_equal": true
     },
     "figures/placement_slices.png": {
-      "reference_sha256": "a8ed28b183eb3041355e5b7e19872106208006c38e95ecd9679505242b74442d",
-      "reproduced_sha256": "a8ed28b183eb3041355e5b7e19872106208006c38e95ecd9679505242b74442d",
+      "reference_sha256": "be1ba43fa48653c70f497d2ef23b76e1927e3debc319baf7affb8f14106144fa",
+      "reproduced_sha256": "be1ba43fa48653c70f497d2ef23b76e1927e3debc319baf7affb8f14106144fa",
       "bitwise_equal": true
     },
     "placement_masks.npz": {
-      "reference_sha256": "08e63b8ccf15cb24847dd0d95f5e5f4462cd16ed5a5fca504696c4278304c097",
-      "reproduced_sha256": "08e63b8ccf15cb24847dd0d95f5e5f4462cd16ed5a5fca504696c4278304c097",
+      "reference_sha256": "98582c6e8ee1bda7ea57fa27bda82ed70d6756efc7b8c9397e29fa834be12f8a",
+      "reproduced_sha256": "98582c6e8ee1bda7ea57fa27bda82ed70d6756efc7b8c9397e29fa834be12f8a",
       "bitwise_equal": true
     }
   },
   "figures_bitwise_equal": true,
   "figures_generated_from_regenerated_outputs": true,
+  "environment_variation_expected": "Python build string may differ between fresh environments; numerical and binary benchmark outputs are compared separately.",
   "overall_reproduction_pass": true
 }
