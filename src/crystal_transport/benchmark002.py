@@ -609,6 +609,8 @@ def run_benchmark(
         raise ValueError("validation_profile must be 'canonical' or 'smoke'")
 
     root = Path(output_dir)
+    source_revision_before_run = _source_revision()
+    tracked_source_clean_before_run = _tracked_source_is_clean()
     root.mkdir(parents=True, exist_ok=True)
     reference_dir = Path(benchmark001_reference_dir)
     start = time.perf_counter()
@@ -917,8 +919,8 @@ def run_benchmark(
         "configuration": configuration,
         "configuration_digest": _configuration_digest(configuration),
         "environment": _environment(),
-        "source_revision": _source_revision(),
-        "tracked_source_clean_before_run": _tracked_source_is_clean(),
+        "source_revision": source_revision_before_run,
+        "tracked_source_clean_before_run": tracked_source_clean_before_run,
         "benchmark001_reference_source_revision": b001_manifest["source_revision"],
         "benchmark001_reference_result_revision": b001_audit.get(
             "reference_result_commit", "unknown"
