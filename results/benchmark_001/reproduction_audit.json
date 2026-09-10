@@ -1,0 +1,45 @@
+{
+  "reproduction_command": "python -m crystal_transport.cli benchmark run benchmark_001 --resolution 32 --output results/benchmark_001",
+  "reference_result_commit": "00e5e4adaac97e03b9fed154ad2399d78ac1a5c8",
+  "reproducing_clone_commit": "d903f60c1baa108f35dfcb51e1f66085fe364adc",
+  "source_revision_in_manifest": "d903f60c1baa108f35dfcb51e1f66085fe364adc",
+  "clean_output_directory_before_run": true,
+  "machine_readable_numeric_tolerances": {
+    "relative": 1e-10,
+    "absolute": 1e-12,
+    "ignored_manifest_field": "runtime_seconds"
+  },
+  "machine_readable_numeric_equivalence": true,
+  "machine_readable_errors": {},
+  "machine_readable_bitwise": {
+    "transport_metrics.csv": true,
+    "morphology_metrics.csv": true,
+    "morphology_convergence.csv": true,
+    "convergence.csv": true,
+    "contrast_sensitivity.csv": true,
+    "validation.json": true,
+    "stability_summary.json": false,
+    "environment.json": true,
+    "manifest.json": false
+  },
+  "figure_hashes": {
+    "figures/benchmark_001_overview.png": {
+      "reference_sha256": "00aa4b5e0c026180baa6db2f5de365382903264b15e0c80c79b4d54017811d6a",
+      "reproduced_sha256": "00aa4b5e0c026180baa6db2f5de365382903264b15e0c80c79b4d54017811d6a",
+      "bitwise_equal": true
+    },
+    "figures/convergence.png": {
+      "reference_sha256": "c2d1c946c3f1a1cac7ee3ee522bcefb2a1cfc1a202255146dc4390266102898a",
+      "reproduced_sha256": "c2d1c946c3f1a1cac7ee3ee522bcefb2a1cfc1a202255146dc4390266102898a",
+      "bitwise_equal": true
+    },
+    "figures/contrast_sensitivity.png": {
+      "reference_sha256": "caea815f857e902c79de40ecf3d7fc6a9db159c3d5a6b84e64bc86f364ee88cd",
+      "reproduced_sha256": "caea815f857e902c79de40ecf3d7fc6a9db159c3d5a6b84e64bc86f364ee88cd",
+      "bitwise_equal": true
+    }
+  },
+  "figures_bitwise_equal": true,
+  "figure_input_basis": "The benchmark run generated the machine-readable records and figures in the same clean output directory; no reference result directory was available at the output path during generation.",
+  "overall_reproduction_pass": true
+}

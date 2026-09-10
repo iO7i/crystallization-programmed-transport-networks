@@ -36,9 +36,10 @@ The result figure is [Benchmark 001 overview](results/benchmark_001/figures/benc
 ## Evidence status
 
 - **REPRODUCED:** morphology and orientation change effective transport under Benchmark 001 controls.
+- **REPRODUCED:** a clean-clone 32³ rerun regenerated all outputs; metric files and figures match the committed reference, with numeric comparison tolerance recorded in `results/benchmark_001/reproduction_audit.json`.
 - **SUPPORTED:** confinement and crystallization history can alter morphology in published crystalline-polymer systems.
 - **OPEN:** whether crystallization history can become a predictive design variable for transport topology.
-- **NOT CLAIMED:** inverse design, crystallization prediction, experimental validation, or universal transport rules.
+- **NOT CLAIMED:** polymer crystallization, PES-b-PEO performance, real membrane performance, SCFT-generated morphology, inverse design, experimental validation, or universal transport rules.
 
 See the [claim ledger](research/claim-ledger.csv), [verified lineage](research/lineage/ikehara.md), [frontier note](research/frontier.md), and [software audit](research/software-audit.md).
 
@@ -46,7 +47,7 @@ See the [claim ledger](research/claim-ledger.csv), [verified lineage](research/l
 
 At `32³`, every fixture has the same measured transport-phase fraction to voxel-count precision. The directional result table, resolution study, contrast study, component/percolation metrics, chord lengths, flux-balance errors, and generator thresholds are generated under `results/benchmark_001/`.
 
-The benchmark’s central result is not a morphology ranking. It is that matched phase fraction does not determine directional transport under the declared scalar-diffusion model. The resolution study also shows that absolute values and some geometric descriptors remain grid-sensitive; the random-field component count is not stable across the tested resolutions.
+The benchmark’s central result is not a morphology ranking. It is that matched phase fraction does not determine directional transport under the declared scalar-diffusion model. The resolution study also shows that absolute values and some geometric descriptors remain grid-sensitive. The Gaussian-random-field component count is not stable across the tested resolutions and is therefore exploratory, not a headline quantitative result.
 
 ## Validation and limitations
 
@@ -84,9 +85,8 @@ pytest
 python -m build
 ```
 
-The project uses Python 3.12 with NumPy, SciPy, and Matplotlib. A small CI smoke benchmark is defined in [.github/workflows/ci.yml](.github/workflows/ci.yml). The first public release remains gated on fresh-clone reproduction and a final citation, privacy, and affiliation audit.
+The project uses Python 3.12 with NumPy, SciPy, and Matplotlib. A small CI smoke benchmark is defined in [.github/workflows/ci.yml](.github/workflows/ci.yml). The v0.1.0-alpha release candidate has passed the fresh-clone reproduction and final citation, privacy, and affiliation audit; the reproduced result records the source and evidence revisions explicitly.
 
 ## Research principle
 
 This project does not assume that a universal crystallization-to-transport design rule exists. A negative result that establishes a boundary of predictability is a useful result.
-
