@@ -6,6 +6,6 @@ authors:
   - family-names: Al-Khairat
     given-names: Hosam
     affiliation: Independent research-software project
-version: 0.1.0-alpha
+version: 0.2.0-alpha
 date-released: 2026-09-10
 license: Apache-2.0

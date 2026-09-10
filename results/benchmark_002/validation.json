@@ -1,0 +1,27 @@
+{
+  "validation_passed": true,
+  "flux_balance_tolerance": 1e-05,
+  "maximum_flux_balance_error": 5.832011469732884e-07,
+  "controls": {
+    "benchmark001_reference_source_revision": "d903f60c1baa108f35dfcb51e1f66085fe364adc",
+    "benchmark001_baseline_max_relative_error": 0.0,
+    "benchmark001_baseline_tolerance": 1e-10,
+    "benchmark001_baseline_pass": true,
+    "d_crystal_equals_d_mobile_noop_max_absolute_normalized_error": 0.0,
+    "d_crystal_equals_d_mobile_noop_tolerance": 1e-10,
+    "d_crystal_equals_d_mobile_noop_pass": true,
+    "same_seed_selection_digest_equal": true,
+    "label_only_noop_field_exact": true,
+    "field_solver_baseline_max_relative_error": 0.0,
+    "field_solver_baseline_pass": true,
+    "reference_result_directory": "results\\benchmark_002\\..\\results\\benchmark_001",
+    "zero_fraction_definition": "zero selected transport-phase voxels",
+    "matrix_diffusivity_explicit": 0.001,
+    "fraction_parameter_used_for_sample": 0.4
+  },
+  "stochastic_replicates": {
+    "mobility_sweep_seed_count": 3,
+    "placement_comparison_seed_count": 5,
+    "placement_seed_policy": "fixed explicit seeds recorded per run"
+  }
+}

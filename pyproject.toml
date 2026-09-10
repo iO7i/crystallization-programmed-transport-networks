@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "crystal-transport"
-version = "0.1.0a0"
+version = "0.2.0a0"
 description = "Reproducible morphology-to-transport benchmarks for crystallization-programmed transport research"
 readme = "README.md"
 requires-python = ">=3.12"

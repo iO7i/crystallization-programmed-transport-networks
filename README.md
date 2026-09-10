@@ -69,6 +69,12 @@ blockage are deferred until those experiments are stable. See
 [docs/benchmark-002.md](docs/benchmark-002.md) and
 [benchmarks/benchmark_002.yaml](benchmarks/benchmark_002.yaml).
 
+The canonical run found no transport improvement under the mobility-only model. At
+equal gyroid fraction and mobility penalty, placement changed normalized transport;
+seeded random placement was most damaging in this experiment, while flux-ranked
+backbone placement was not. These are declared synthetic placement results, not claims
+about where real crystals form.
+
 ## Validation and limitations
 
 The solver passes uniform-medium and laminate series/parallel checks before running Benchmark 001. Independent low-face/high-face fluxes are compared with an acceptance tolerance recorded in the manifest. The matrix coefficient is explicit and is swept across `D_matrix = 10⁻², 10⁻³, 10⁻⁴` at `16³`; it is a near-insulating model assumption, not hidden physics.
