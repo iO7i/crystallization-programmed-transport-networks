@@ -44,7 +44,7 @@
   "solver_tolerance": 1e-10,
   "flux_balance_tolerance": 1e-05,
   "boundary_conditions": "Dirichlet c=1/0 along measured axis; periodic transverse axes",
-  "runtime_seconds": 110.54649880000215,
+  "runtime_seconds": 103.78188149999187,
   "configuration": {
     "benchmark_id": "benchmark_002",
     "source_benchmark": "benchmark_001",
@@ -106,8 +106,8 @@
     "scipy": "1.18.1",
     "matplotlib": "3.11.1"
   },
-  "source_revision": "f0e9f3d1b5d743c1e15462ea22d274714b14e8a0",
-  "tracked_source_clean_before_run": false,
+  "source_revision": "32757a31d697025f7f84c06b7ce5a793810d96a1",
+  "tracked_source_clean_before_run": true,
   "benchmark001_reference_source_revision": "d903f60c1baa108f35dfcb51e1f66085fe364adc",
   "benchmark001_reference_result_revision": "00e5e4adaac97e03b9fed154ad2399d78ac1a5c8",
   "benchmark001_reference_manifest": "results\\benchmark_001\\manifest.json",
