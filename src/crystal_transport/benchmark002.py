@@ -379,21 +379,34 @@ def _grid_stability(grid_rows: list[dict[str, Any]]) -> dict[str, Any]:
         case_result: dict[str, Any] = {}
         for morphology in sorted({str(row["morphology"]) for row in case_rows}):
             morphology_rows = [row for row in case_rows if row["morphology"] == morphology]
-            topology = [
-                [row[f"percolates_{axis}"] for axis in "xyz"] + [row["components"]]
-                for row in morphology_rows
-            ]
-            spreads: dict[str, float] = {}
-            for axis in "xyz":
-                values = [float(row[f"d_eff_{axis}"]) for row in morphology_rows]
-                spreads[axis] = (max(values) - min(values)) / max(
-                    abs(float(np.mean(values))), 1.0e-30
+            mode_groups = (
+                sorted({str(row["placement_mode"]) for row in morphology_rows})
+                if case == "grid_placement_comparison"
+                else ["all"]
+            )
+            morphology_result: dict[str, Any] = {}
+            for mode in mode_groups:
+                selected_rows = (
+                    morphology_rows
+                    if mode == "all"
+                    else [row for row in morphology_rows if row["placement_mode"] == mode]
                 )
-            case_result[morphology] = {
-                "topology_states_by_resolution": topology,
-                "topology_state_stable": len({json.dumps(item) for item in topology}) == 1,
-                "effective_transport_relative_range": spreads,
-            }
+                topology = [
+                    [row[f"percolates_{axis}"] for axis in "xyz"] + [row["components"]]
+                    for row in selected_rows
+                ]
+                spreads: dict[str, float] = {}
+                for axis in "xyz":
+                    values = [float(row[f"d_eff_{axis}"]) for row in selected_rows]
+                    spreads[axis] = (max(values) - min(values)) / max(
+                        abs(float(np.mean(values))), 1.0e-30
+                    )
+                morphology_result[mode] = {
+                    "topology_states_by_resolution": topology,
+                    "topology_state_stable": len({json.dumps(item) for item in topology}) == 1,
+                    "effective_transport_relative_range": spreads,
+                }
+            case_result[morphology] = morphology_result
         result["cases"][case] = case_result
     return result
 
