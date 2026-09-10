@@ -1,0 +1,116 @@
+{
+  "benchmark_id": "benchmark_002",
+  "title": "When Crystallization Helps or Hurts Transport",
+  "scientific_boundary": "phenomenological crystallinity-perturbation benchmark",
+  "question": "How do controlled low-mobility labels and their spatial placement affect transport in already-defined synthetic networks?",
+  "source_benchmark": "benchmark_001",
+  "starting_morphologies": [
+    "lamellae",
+    "cylinders",
+    "gyroid_level_set"
+  ],
+  "excluded_morphologies": [
+    "gaussian_random_field"
+  ],
+  "transport_phase_fraction": 0.4,
+  "crystalline_fraction_definition": "fraction of existing transport-phase voxels labelled crystalline-like",
+  "d_mobile": 1.0,
+  "d_crystal_ratios": [
+    1.0,
+    0.1,
+    0.01,
+    0.001
+  ],
+  "d_matrix": 0.001,
+  "d_matrix_contrast_values": [
+    0.01,
+    0.001,
+    0.0001
+  ],
+  "placement_modes": [
+    "random",
+    "interface",
+    "baseline-flux-ranked",
+    "low_criticality"
+  ],
+  "geometry_perturbation_mode": "none; 002C deferred",
+  "resolution": 16,
+  "grid_resolutions": [
+    16,
+    24,
+    32
+  ],
+  "solver": "Benchmark 001 cell-centred finite volume with voxelwise D(x) field",
+  "solver_tolerance": 1e-10,
+  "flux_balance_tolerance": 1e-05,
+  "boundary_conditions": "Dirichlet c=1/0 along measured axis; periodic transverse axes",
+  "runtime_seconds": 103.78188149999187,
+  "configuration": {
+    "benchmark_id": "benchmark_002",
+    "source_benchmark": "benchmark_001",
+    "resolution": 16,
+    "transport_phase_fraction": 0.4,
+    "d_mobile": 1.0,
+    "d_crystal_ratios": [
+      1.0,
+      0.1,
+      0.01,
+      0.001
+    ],
+    "d_matrix": 0.001,
+    "crystalline_fractions_of_transport_phase": [
+      0.0,
+      0.1,
+      0.2,
+      0.4,
+      0.6
+    ],
+    "sweep_seeds": [
+      20260910,
+      20260911,
+      20260912
+    ],
+    "placement_seeds": [
+      20260910,
+      20260911,
+      20260912,
+      20260913,
+      20260914
+    ],
+    "placement_modes": [
+      "random",
+      "interface",
+      "baseline-flux-ranked",
+      "low_criticality"
+    ],
+    "grid_resolutions": [
+      16,
+      24,
+      32
+    ],
+    "contrast_matrix_values": [
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "solver_tolerance": 1e-10,
+    "flux_balance_tolerance": 1e-05,
+    "geometry_perturbation_mode": "none",
+    "validation_profile": "canonical"
+  },
+  "configuration_digest": "f7dbc3266a801d5269d4d4e9b31480f43871216ca0fcb906645c4b96706d3bb4",
+  "environment": {
+    "python": "3.12.12 (main, Dec  9 2025, 19:02:55) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.1"
+  },
+  "source_revision": "32757a31d697025f7f84c06b7ce5a793810d96a1",
+  "tracked_source_clean_before_run": true,
+  "benchmark001_reference_source_revision": "d903f60c1baa108f35dfcb51e1f66085fe364adc",
+  "benchmark001_reference_result_revision": "00e5e4adaac97e03b9fed154ad2399d78ac1a5c8",
+  "benchmark001_reference_manifest": "results\\benchmark_001\\manifest.json",
+  "headline_interpretation": "Fixed-geometry passive mobility perturbation control; 002C structural help/hurt remains open and deferred",
+  "validation_profile": "canonical"
+}

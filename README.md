@@ -49,6 +49,37 @@ At `32³`, every fixture has the same measured transport-phase fraction to voxel
 
 The benchmark’s central result is not a morphology ranking. It is that matched phase fraction does not determine directional transport under the declared scalar-diffusion model. The resolution study also shows that absolute values and some geometric descriptors remain grid-sensitive. The Gaussian-random-field component count is not stable across the tested resolutions and is therefore exploratory, not a headline quantitative result.
 
+## Benchmark 002 — phenomenological crystalline-like perturbations
+
+Benchmark 002 reuses the stable lamella, cylinder, and analytical gyroid fixtures. It
+labels a controlled fraction of the existing transport phase as a crystalline-like
+low-mobility subdomain and measures how mobility penalty and spatial placement affect
+transport. 002A and 002B are fixed-geometry phenomenological mobility perturbations:
+they are not a crystallization simulation, do not reconstruct morphology, and cannot
+establish whether real crystallization improves transport. Structural help/hurt is
+deferred to 002C. They do not model PES-b-PEO behavior, SCFT, or experimental material
+performance.
+
+Run it with:
+
+```bash
+crystal-transport benchmark run benchmark_002 --resolution 16 --output results/benchmark_002
+```
+
+The denominator is always the existing transport-phase voxel count. The first release
+scope contains mobility-only 002A and spatial-placement 002B; structural narrowing and
+blockage are deferred until those experiments are stable. See
+[docs/benchmark-002.md](docs/benchmark-002.md) and
+[benchmarks/benchmark_002.yaml](benchmarks/benchmark_002.yaml).
+
+The canonical run found no transport improvement under the mobility-only model. This is
+the expected passive-diffusion control result for reducing positive local diffusivity,
+not a universal claim about crystallization. At equal gyroid fraction and mobility
+penalty, placement changed normalized transport; seeded random placement was most
+damaging in this experiment, while the literal `baseline-flux-ranked` placement was
+not. These are declared synthetic placement results, not claims about where real
+crystals form or which network locations are truly critical.
+
 ## Validation and limitations
 
 The solver passes uniform-medium and laminate series/parallel checks before running Benchmark 001. Independent low-face/high-face fluxes are compared with an acceptance tolerance recorded in the manifest. The matrix coefficient is explicit and is swept across `D_matrix = 10⁻², 10⁻³, 10⁻⁴` at `16³`; it is a near-insulating model assumption, not hidden physics.
@@ -85,7 +116,7 @@ pytest
 python -m build
 ```
 
-The project uses Python 3.12 with NumPy, SciPy, and Matplotlib. A small CI smoke benchmark is defined in [.github/workflows/ci.yml](.github/workflows/ci.yml). The v0.1.0-alpha release candidate has passed the fresh-clone reproduction and final citation, privacy, and affiliation audit; the reproduced result records the source and evidence revisions explicitly.
+The project uses Python 3.12 with NumPy, SciPy, and Matplotlib. A small CI smoke benchmark is defined in [.github/workflows/ci.yml](.github/workflows/ci.yml). The v0.2.0-alpha release candidate has passed the fresh-clone reproduction and final citation, privacy, and affiliation audit; the reproduced result records the source and evidence revisions explicitly.
 
 ## Research principle
 

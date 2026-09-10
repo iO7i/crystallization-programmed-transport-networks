@@ -1,0 +1,319 @@
+{
+  "grid_stability": {
+    "resolutions": [
+      16,
+      24,
+      32
+    ],
+    "cases": {
+      "grid_baseline": {
+        "cylinders": {
+          "all": {
+            "topology_states_by_resolution": [
+              [
+                false,
+                false,
+                true,
+                4
+              ],
+              [
+                false,
+                false,
+                true,
+                4
+              ],
+              [
+                false,
+                false,
+                true,
+                4
+              ]
+            ],
+            "topology_state_stable": true,
+            "effective_transport_relative_range": {
+              "x": 0.16020415901855975,
+              "y": 0.10036352034298396,
+              "z": 0.000973943858006154
+            }
+          }
+        },
+        "gyroid_level_set": {
+          "all": {
+            "topology_states_by_resolution": [
+              [
+                true,
+                true,
+                true,
+                1
+              ],
+              [
+                true,
+                true,
+                true,
+                1
+              ],
+              [
+                true,
+                true,
+                true,
+                1
+              ]
+            ],
+            "topology_state_stable": true,
+            "effective_transport_relative_range": {
+              "x": 0.06776544210488018,
+              "y": 0.06759007730673751,
+              "z": 0.06762381321573538
+            }
+          }
+        },
+        "lamellae": {
+          "all": {
+            "topology_states_by_resolution": [
+              [
+                false,
+                true,
+                true,
+                1
+              ],
+              [
+                false,
+                true,
+                true,
+                1
+              ],
+              [
+                false,
+                true,
+                true,
+                1
+              ]
+            ],
+            "topology_state_stable": true,
+            "effective_transport_relative_range": {
+              "x": 0.009645645549146369,
+              "y": 0.013084665838119057,
+              "z": 0.0007726273087508464
+            }
+          }
+        }
+      },
+      "grid_moderate_random": {
+        "cylinders": {
+          "all": {
+            "topology_states_by_resolution": [
+              [
+                false,
+                false,
+                true,
+                4
+              ],
+              [
+                false,
+                false,
+                true,
+                4
+              ],
+              [
+                false,
+                false,
+                true,
+                4
+              ]
+            ],
+            "topology_state_stable": true,
+            "effective_transport_relative_range": {
+              "x": 0.15905733900488644,
+              "y": 0.0976505878320103,
+              "z": 0.010611024270692548
+            }
+          }
+        },
+        "gyroid_level_set": {
+          "all": {
+            "topology_states_by_resolution": [
+              [
+                true,
+                true,
+                true,
+                1
+              ],
+              [
+                true,
+                true,
+                true,
+                1
+              ],
+              [
+                true,
+                true,
+                true,
+                1
+              ]
+            ],
+            "topology_state_stable": true,
+            "effective_transport_relative_range": {
+              "x": 0.10665194743552267,
+              "y": 0.0723803773495384,
+              "z": 0.039991445887684156
+            }
+          }
+        },
+        "lamellae": {
+          "all": {
+            "topology_states_by_resolution": [
+              [
+                false,
+                true,
+                true,
+                1
+              ],
+              [
+                false,
+                true,
+                true,
+                1
+              ],
+              [
+                false,
+                true,
+                true,
+                1
+              ]
+            ],
+            "topology_state_stable": true,
+            "effective_transport_relative_range": {
+              "x": 0.009564007601371764,
+              "y": 0.00691530019155176,
+              "z": 0.006913537512678535
+            }
+          }
+        }
+      },
+      "grid_placement_comparison": {
+        "gyroid_level_set": {
+          "baseline-flux-ranked": {
+            "topology_states_by_resolution": [
+              [
+                true,
+                true,
+                true,
+                1
+              ],
+              [
+                true,
+                true,
+                true,
+                1
+              ],
+              [
+                true,
+                true,
+                true,
+                1
+              ]
+            ],
+            "topology_state_stable": true,
+            "effective_transport_relative_range": {
+              "x": 0.07705662556208528,
+              "y": 0.07663039750525646,
+              "z": 0.07598645216717458
+            }
+          },
+          "interface": {
+            "topology_states_by_resolution": [
+              [
+                true,
+                true,
+                true,
+                1
+              ],
+              [
+                true,
+                true,
+                true,
+                1
+              ],
+              [
+                true,
+                true,
+                true,
+                1
+              ]
+            ],
+            "topology_state_stable": true,
+            "effective_transport_relative_range": {
+              "x": 0.13216845495554047,
+              "y": 0.11895856581941207,
+              "z": 0.13705843406064347
+            }
+          },
+          "low_criticality": {
+            "topology_states_by_resolution": [
+              [
+                true,
+                true,
+                true,
+                1
+              ],
+              [
+                true,
+                true,
+                true,
+                1
+              ],
+              [
+                true,
+                true,
+                true,
+                1
+              ]
+            ],
+            "topology_state_stable": true,
+            "effective_transport_relative_range": {
+              "x": 0.09941245276584601,
+              "y": 0.09885230850991449,
+              "z": 0.10212452973850837
+            }
+          },
+          "random": {
+            "topology_states_by_resolution": [
+              [
+                true,
+                true,
+                true,
+                1
+              ],
+              [
+                true,
+                true,
+                true,
+                1
+              ],
+              [
+                true,
+                true,
+                true,
+                1
+              ]
+            ],
+            "topology_state_stable": true,
+            "effective_transport_relative_range": {
+              "x": 0.10665194743552267,
+              "y": 0.0723803773495384,
+              "z": 0.039991445887684156
+            }
+          }
+        }
+      }
+    },
+    "structural_connectivity_transition": {
+      "tested": false,
+      "reason": "002C structural perturbations are deferred until 002A and 002B are stable"
+    }
+  },
+  "placement_summary_file": "placement_summary.csv",
+  "contrast_summary_file": "contrast_sensitivity.csv",
+  "random_field_excluded": true,
+  "structural_perturbation_status": "deferred"
+}

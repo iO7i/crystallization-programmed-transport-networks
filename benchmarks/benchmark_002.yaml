@@ -1,0 +1,36 @@
+benchmark_id: benchmark_002
+title: "When Crystallization Helps or Hurts Transport"
+scientific_boundary: "phenomenological crystallinity-perturbation benchmark"
+source_benchmark: benchmark_001
+starting_morphologies:
+  - lamellae
+  - cylinders
+  - gyroid_level_set
+excluded_morphologies:
+  - gaussian_random_field
+grid_resolution: 16
+grid_stability_resolutions: [16, 24, 32]
+transport_phase_fraction: 0.4
+crystalline_fraction_definition: "fraction of existing transport-phase voxels labelled crystalline-like"
+crystalline_fraction_values: [0.0, 0.1, 0.2, 0.4, 0.6]
+D_mobile: 1.0
+D_crystal_over_D_mobile: [1.0, 0.1, 0.01, 0.001]
+D_matrix: 0.001
+D_matrix_sensitivity_values: [0.01, 0.001, 0.0001]
+placement_modes:
+  - random
+  - interface
+  - baseline-flux-ranked
+  - low_criticality
+sweep_seed_values: [20260910, 20260911, 20260912]
+placement_seed_values: [20260910, 20260911, 20260912, 20260913, 20260914]
+geometry_perturbation_mode: none
+structural_perturbation_status: deferred_until_002A_and_002B_stable
+validation_profiles:
+  canonical: "full numerical acceptance on the declared Benchmark 002 grids"
+  smoke: "fast CI artifact/core-invariant checks; not canonical scientific acceptance"
+solver: "Benchmark 001 finite-volume solver with explicit voxelwise D(x)"
+solver_tolerance: 1.0e-10
+flux_balance_tolerance: 1.0e-5
+boundary_conditions: "Dirichlet c=1/0 along measured axis; periodic transverse axes"
+replicates: "three seeds for 002A sweep; five seeds for 002B placement comparison"
