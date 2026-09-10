@@ -1,0 +1,52 @@
+{
+  "reproduction_command": "python -m crystal_transport.cli benchmark run benchmark_002 --resolution 16 --output results/benchmark_002",
+  "reference_result_commit": "8e456e6e7a09faaf25dffb14591f815f17257eeb",
+  "reproducing_clone_commit": "8e456e6e7a09faaf25dffb14591f815f17257eeb",
+  "canonical_source_revision": "90ceafc640b5670c23eac846aad7f4786f6895f4",
+  "source_revision_difference_explanation": "The committed result was generated before the evidence commit; the fresh clone runs the same source from the public evidence commit.",
+  "clean_clone": true,
+  "machine_readable_numeric_tolerances": {
+    "relative": 1e-10,
+    "absolute": 1e-12,
+    "ignored_manifest_field": "runtime_seconds"
+  },
+  "machine_readable_numeric_equivalence": true,
+  "machine_readable_errors": {},
+  "machine_readable_bitwise": {
+    "runs.csv": true,
+    "summary.csv": true,
+    "placement_summary.csv": true,
+    "grid_summary.csv": true,
+    "contrast_sensitivity.csv": true,
+    "morphology_metrics.csv": true,
+    "validation.json": true,
+    "stability_summary.json": true,
+    "environment.json": true,
+    "manifest.json": false
+  },
+  "figures_and_mask_hashes": {
+    "figures/mobility_sweep.png": {
+      "reference_sha256": "ceaa2c2433b396d012af81d6be87ecaa25b8cf377f6ab58331bac01a376f4611",
+      "reproduced_sha256": "ceaa2c2433b396d012af81d6be87ecaa25b8cf377f6ab58331bac01a376f4611",
+      "bitwise_equal": true
+    },
+    "figures/placement_comparison.png": {
+      "reference_sha256": "cde38931d815449c1bd1792c7d420ccabc141c6b77d8d711169db93c6d950bac",
+      "reproduced_sha256": "cde38931d815449c1bd1792c7d420ccabc141c6b77d8d711169db93c6d950bac",
+      "bitwise_equal": true
+    },
+    "figures/placement_slices.png": {
+      "reference_sha256": "a8ed28b183eb3041355e5b7e19872106208006c38e95ecd9679505242b74442d",
+      "reproduced_sha256": "a8ed28b183eb3041355e5b7e19872106208006c38e95ecd9679505242b74442d",
+      "bitwise_equal": true
+    },
+    "placement_masks.npz": {
+      "reference_sha256": "08e63b8ccf15cb24847dd0d95f5e5f4462cd16ed5a5fca504696c4278304c097",
+      "reproduced_sha256": "08e63b8ccf15cb24847dd0d95f5e5f4462cd16ed5a5fca504696c4278304c097",
+      "bitwise_equal": true
+    }
+  },
+  "figures_bitwise_equal": true,
+  "figures_generated_from_regenerated_outputs": true,
+  "overall_reproduction_pass": true
+}
