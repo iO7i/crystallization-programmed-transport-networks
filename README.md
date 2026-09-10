@@ -49,6 +49,26 @@ At `32³`, every fixture has the same measured transport-phase fraction to voxel
 
 The benchmark’s central result is not a morphology ranking. It is that matched phase fraction does not determine directional transport under the declared scalar-diffusion model. The resolution study also shows that absolute values and some geometric descriptors remain grid-sensitive. The Gaussian-random-field component count is not stable across the tested resolutions and is therefore exploratory, not a headline quantitative result.
 
+## Benchmark 002 — phenomenological crystalline-like perturbations
+
+Benchmark 002 reuses the stable lamella, cylinder, and analytical gyroid fixtures. It
+labels a controlled fraction of the existing transport phase as a crystalline-like
+low-mobility subdomain and measures how mobility penalty and spatial placement affect
+transport. It does not model real crystallization, PES-b-PEO behavior, SCFT, or
+experimental material performance.
+
+Run it with:
+
+```bash
+crystal-transport benchmark run benchmark_002 --resolution 16 --output results/benchmark_002
+```
+
+The denominator is always the existing transport-phase voxel count. The first release
+scope contains mobility-only 002A and spatial-placement 002B; structural narrowing and
+blockage are deferred until those experiments are stable. See
+[docs/benchmark-002.md](docs/benchmark-002.md) and
+[benchmarks/benchmark_002.yaml](benchmarks/benchmark_002.yaml).
+
 ## Validation and limitations
 
 The solver passes uniform-medium and laminate series/parallel checks before running Benchmark 001. Independent low-face/high-face fluxes are compared with an acceptance tolerance recorded in the manifest. The matrix coefficient is explicit and is swept across `D_matrix = 10⁻², 10⁻³, 10⁻⁴` at `16³`; it is a near-insulating model assumption, not hidden physics.

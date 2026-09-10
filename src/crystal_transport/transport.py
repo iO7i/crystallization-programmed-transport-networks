@@ -205,6 +205,131 @@ def solve_effective_diffusivity(
     )
 
 
+def _assemble_system_for_diffusivity_field(
+    morphology: Morphology,
+    diffusivity: np.ndarray,
+    axis: int,
+    low_value: float,
+    high_value: float,
+) -> tuple[csr_matrix, np.ndarray, np.ndarray]:
+    """Assemble the same finite-volume operator for a voxelwise ``D(x)`` field."""
+
+    if diffusivity.shape != morphology.shape:
+        raise ValueError("diffusivity field must have the morphology shape")
+    if not np.all(np.isfinite(diffusivity)) or np.any(diffusivity <= 0):
+        raise ValueError("diffusivity field must contain finite positive values")
+    if not morphology.periodic_axes[axis]:
+        raise ValueError("the measured axis must use a finite sample with Dirichlet ends")
+
+    shape = morphology.shape
+    spacing = np.asarray(morphology.spacing, dtype=float)
+    diffusivity_flat = np.asarray(diffusivity, dtype=float).ravel()
+    ids = np.arange(np.prod(shape), dtype=np.int64).reshape(shape)
+    row_parts: list[np.ndarray] = []
+    col_parts: list[np.ndarray] = []
+    data_parts: list[np.ndarray] = []
+    diagonal = np.zeros(diffusivity_flat.size, dtype=float)
+    rhs = np.zeros(diffusivity_flat.size, dtype=float)
+
+    for direction in range(3):
+        use_periodic = morphology.periodic_axes[direction] and direction != axis
+        left_ids, right_ids = _edge_ids(shape, direction, use_periodic)
+        left_d = diffusivity_flat[left_ids]
+        right_d = diffusivity_flat[right_ids]
+        face_area = np.prod([spacing[i] for i in range(3) if i != direction])
+        conductance = _harmonic_mean(left_d, right_d) * face_area / spacing[direction]
+        diagonal[left_ids] += conductance
+        diagonal[right_ids] += conductance
+        row_parts.extend([left_ids, right_ids])
+        col_parts.extend([right_ids, left_ids])
+        data_parts.extend([-conductance, -conductance])
+
+    low_slice: list[slice | int] = [slice(None)] * 3
+    high_slice: list[slice | int] = [slice(None)] * 3
+    low_slice[axis] = 0
+    high_slice[axis] = shape[axis] - 1
+    low_ids = ids[tuple(low_slice)].ravel()
+    high_ids = ids[tuple(high_slice)].ravel()
+    low_boundary = diffusivity_flat[low_ids] * 2.0 / spacing[axis]
+    high_boundary = diffusivity_flat[high_ids] * 2.0 / spacing[axis]
+    diagonal[low_ids] += low_boundary
+    diagonal[high_ids] += high_boundary
+    rhs[low_ids] += low_boundary * low_value
+    rhs[high_ids] += high_boundary * high_value
+
+    row_parts.append(np.arange(diffusivity_flat.size, dtype=np.int64))
+    col_parts.append(np.arange(diffusivity_flat.size, dtype=np.int64))
+    data_parts.append(diagonal)
+    matrix = coo_matrix(
+        (np.concatenate(data_parts), (np.concatenate(row_parts), np.concatenate(col_parts))),
+        shape=(diffusivity_flat.size, diffusivity_flat.size),
+    ).tocsr()
+    return matrix, rhs, diffusivity_flat
+
+
+def solve_effective_diffusivity_field(
+    morphology: Morphology,
+    diffusivity: np.ndarray,
+    axis: int,
+    low_value: float = 1.0,
+    high_value: float = 0.0,
+    rtol: float = 1.0e-9,
+    maxiter: int | None = None,
+) -> TransportResult:
+    """Solve steady diffusion for an explicit positive voxelwise ``D(x)`` field.
+
+    This extension is deliberately unaware of crystallinity or any other scientific
+    interpretation. It accepts only local diffusivity values, preserving the original
+    scalar-phase solver as the Benchmark 001 reference implementation.
+    """
+
+    if axis not in (0, 1, 2):
+        raise ValueError("axis must be 0, 1, or 2")
+    matrix, rhs, diffusivity_flat = _assemble_system_for_diffusivity_field(
+        morphology,
+        np.asarray(diffusivity, dtype=float),
+        axis,
+        low_value,
+        high_value,
+    )
+    iterations = 0
+
+    def callback(_: np.ndarray) -> None:
+        nonlocal iterations
+        iterations += 1
+
+    solution, info = cg(matrix, rhs, rtol=rtol, atol=0.0, maxiter=maxiter, callback=callback)
+    if info != 0:
+        raise RuntimeError(f"conjugate-gradient solver did not converge (info={info})")
+    residual = matrix @ solution - rhs
+    residual_norm = float(np.linalg.norm(residual) / max(np.linalg.norm(rhs), 1.0))
+    concentration = solution.reshape(morphology.shape)
+    ids = np.arange(np.prod(morphology.shape), dtype=np.int64).reshape(morphology.shape)
+    low_slice: list[slice | int] = [slice(None)] * 3
+    low_slice[axis] = 0
+    low_ids = ids[tuple(low_slice)].ravel()
+    high_slice: list[slice | int] = [slice(None)] * 3
+    high_slice[axis] = morphology.shape[axis] - 1
+    high_ids = ids[tuple(high_slice)].ravel()
+    spacing = morphology.spacing[axis]
+    low_fluxes = diffusivity_flat[low_ids] * 2.0 / spacing * (low_value - solution[low_ids])
+    high_fluxes = diffusivity_flat[high_ids] * 2.0 / spacing * (solution[high_ids] - high_value)
+    flux = float(np.mean(low_fluxes))
+    high_flux = float(np.mean(high_fluxes))
+    flux_balance_error = abs(flux - high_flux) / max(abs(flux), abs(high_flux), 1.0e-30)
+    effective = flux * morphology.physical_size[axis] / (low_value - high_value)
+    return TransportResult(
+        axis,
+        float(effective),
+        flux,
+        high_flux,
+        float(flux_balance_error),
+        residual_norm,
+        iterations,
+        concentration,
+    )
+
+
 def analytical_laminate_diffusivity(
     fraction: float, d_transport: float, d_matrix: float, parallel: bool
 ) -> float:
