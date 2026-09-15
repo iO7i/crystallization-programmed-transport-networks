@@ -76,7 +76,7 @@ The gyroid fixture is exactly a thresholded first-harmonic analytical gyroid lev
 
 ## Research lineage and independence
 
-This project was initiated by Hosam Al-Khairat as a return to questions originating in earlier chemical-engineering research on polymer crystallization, now approached through scientific computing. The earlier unpublished measurements are not used as validated reference data.
+This project returns to questions from earlier chemical-engineering research on polymer crystallization, now approached through scientific computing. The earlier unpublished measurements are not used as validated reference data.
 
 This is an independent research-software project and does not represent Kanagawa University or the Ikehara Laboratory. No university or laboratory endorsement, collaboration, or affiliation is implied.
 

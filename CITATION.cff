@@ -3,8 +3,7 @@ title: "Crystallization-Programmed Transport Networks"
 message: "If this software contributes to published work, please cite the repository revision used."
 type: software
 authors:
-  - family-names: Al-Khairat
-    given-names: Hosam
+  - name: Hosam
     affiliation: Independent research-software project
 version: 0.2.0-alpha
 date-released: 2026-09-10

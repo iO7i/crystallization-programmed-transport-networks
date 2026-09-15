@@ -27,12 +27,11 @@ confined crystallization in block-copolymer microdomains (DOI:
 in a soft-confined cylindrical system (DOI:
 [10.1021/acs.macromol.6b02361](https://doi.org/10.1021/acs.macromol.6b02361)).
 
-## Personal connection, stated narrowly
+## Research context
 
-Hosam Al-Khairat conducted undergraduate chemical-engineering research under Professor
-Takayuki Ikehara on crystallization behavior in a PES-b-PEO-related system. This
-repository returns to that family of physical questions using computational methods;
-it does not use old unpublished measurements as validated input data.
+This repository returns to crystallization questions related to a PES-b-PEO system using
+computational methods. It does not use old unpublished measurements as validated input
+data.
 
 This project is independent and does not represent Kanagawa University or the Ikehara
 Laboratory. The cited researchers are not repository contributors, advisors,
