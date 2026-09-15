@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
-authors = [{ name = "Hosam Al-Khairat" }]
+authors = [{ name = "Hosam" }]
 dependencies = [
   "matplotlib>=3.8,<4",
   "numpy>=1.26,<3",
